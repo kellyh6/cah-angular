@@ -70,7 +70,10 @@ angular.module('Services', [])
     getCards: function(){
       return $http.get("api/blackCards")
       .then(function success(response){
-        return response.data;
+        if(blackCards.length === 0){
+          blackCards = response.data;
+        }
+        return blackCards;
       }, function error(err){
         console.log("error", err);
         return null;
@@ -79,11 +82,15 @@ angular.module('Services', [])
   };
 }])
 .factory('WhiteCardAPI', ['$http', function($http){
+  var whiteCards = [];
   return {
     getCards: function(){
       return $http.get("api/whiteCards")
       .then(function success(response){
-        return response.data;
+        if(whiteCards.length === 0){
+          whiteCards = response.data;
+        }
+        return whiteCards;
       }, function error(err){
         console.log("error", err);
         return null;
