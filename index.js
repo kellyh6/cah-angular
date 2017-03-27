@@ -16,6 +16,9 @@ var secret = process.env.JWT_SECRET;
 //mongoose models and connection
 var mongoose = require('mongoose');
 var User = require('./models/user');
+var WhiteCard = require('./models/whiteCard');
+var BlackCard = require('./models/blackCard');
+var Deck = require('./models/deck');
 mongoose.connect('mongodb://localhost/cardsagainsthumanity');
 
 app.use(bodyParser.json());
@@ -26,8 +29,9 @@ app.use(require('morgan')('dev'));
 app.use('/api/users', expressJWT({secret: secret}).unless({
   path: [{ url: '/api/users', methods: ['POST'] }]
 }), require('./controllers/users'));
-
-// app.use('/api/users', require('./controllers/users'));
+app.use('/api/blackCards', require('./controllers/blackCards'));
+app.use('/api/whiteCards', require('./controllers/whiteCards'));
+app.use('/api/decks', require('./controllers/decks'));
 
 // this middleware will check if expressJWT did not authorize the user, and return a message
 app.use(function (err, req, res, next) {

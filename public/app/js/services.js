@@ -64,6 +64,33 @@ angular.module('Services', [])
   };
 }])
 // Cards factory
+.factory('BlackCardAPI', ['$http', function($http){
+  var blackCards = [];
+  return {
+    getCards: function(){
+      return $http.get("api/blackCards")
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    }
+  };
+}])
+.factory('WhiteCardAPI', ['$http', function($http){
+  return {
+    getCards: function(){
+      return $http.get("api/whiteCards")
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    }
+  };
+}])
 .factory('QuestionsFactory', [function(){
   return {
     getCards: function(){
