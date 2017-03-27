@@ -1,4 +1,4 @@
-angular.module('AuthCtrls', ['AuthServices'])
+angular.module('AuthCtrls', ['Services'])
 .controller('NavCtrl', ['$scope', 'Auth', '$location', 'Alerts', function($scope, Auth, $location, Alerts){
   $scope.isLoggedIn = function(){
     return Auth.isLoggedIn();

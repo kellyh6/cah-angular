@@ -13,7 +13,7 @@ var app = express();
 //mongoose models and connection
 var mongoose = require('mongoose');
 var User = require('./models/user');
-mongoose.connect('mongodb://localhost/dummydb');
+mongoose.connect('mongodb://localhost/cardsagainsthumanity');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

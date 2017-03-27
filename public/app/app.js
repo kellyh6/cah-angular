@@ -1,4 +1,4 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls']);
 
 app.config([
   '$stateProvider',
@@ -10,8 +10,14 @@ app.config([
     $stateProvider
     .state('home', {
       url: '/',
-      templateUrl: 'app/views/home.html'
+      templateUrl: 'app/views/home.html',
+      controller: 'CardsCtrl'
     })
+    .state('main', {
+    url:"/main",
+    templateUrl: "app/views/main.html",
+    controller: "CardsCtrl"
+  })
     .state('signup', {
       url:'/signup',
       templateUrl: 'app/views/userSignup.html',
