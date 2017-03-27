@@ -1,4 +1,5 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'btford.socket-io']);
+
 
 app.config([
   '$stateProvider',

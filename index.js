@@ -2,13 +2,16 @@ require("dotenv").config();
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
+var app = express();
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
 //JSON web token
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 
-var app = express();
 
 //mongoose models and connection
 var mongoose = require('mongoose');
@@ -33,6 +36,13 @@ app.use(function (err, req, res, next) {
   }
 });
 
+io.on('connect', function(socket){
+  console.log("A user has connected")
+  // socket.on('chat message', function(msg){
+  //   io.emit('chat message', msg);
+  // });
+});
+
 // POST /api/auth - if authenticated, return a signed JWT
 app.post('/api/auth', function(req, res) {
   User.findOne({ email: req.body.email }, function(err, user) {
@@ -51,10 +61,13 @@ app.post('/api/auth', function(req, res) {
   });
 });
 
+
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
-var server = app.listen(process.env.PORT || 3000);
+var server = http.listen(process.env.PORT || 3000, function() {
+  console.log("Listening on port 3000")
+});
 
 module.exports = server;
