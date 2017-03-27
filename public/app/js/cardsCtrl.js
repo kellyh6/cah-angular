@@ -1,6 +1,7 @@
 angular.module('CardsCtrls', ['Services'])
 .controller('CardsCtrl', ['$scope', "BlackCardAPI", "WhiteCardAPI", "sharedProperties", function($scope, BlackCardAPI, WhiteCardAPI, sharedProperties) {
   $scope.blackCards = [];
+  $scope.whiteCards = [];
   $scope.displayCard = {};
   $scope.errorMessage = "";
   var CARDS_PER_PLAYER = 2;
@@ -34,14 +35,14 @@ angular.module('CardsCtrls', ['Services'])
       }
   }
 
-
-  for (i = 0; i < $scope.numPlayers; i++) {
-    WhiteCardAPI.getCards().then(function success(response){
-      $scope.playerCards.push(shuffleArray(response, CARDS_PER_PLAYER));
-    }, function error(err){
-      console.log(err);
-    });
-  }
+  WhiteCardAPI.getCards().then(function success(response){
+    $scope.whiteCards = response;
+    for (i = 0; i < $scope.numPlayers; i++) {
+      $scope.playerCards.push(shuffleArray($scope.whiteCards, CARDS_PER_PLAYER));
+    }
+  }, function error(err){
+    console.log(err);
+  });
 
   $scope.$watch("numPlayers", function(newVal, oldVal){
     $scope.errorMessage = "";
@@ -54,18 +55,13 @@ angular.module('CardsCtrls', ['Services'])
 
   $scope.$watchCollection('selectedAnswers', function(newAnswers, oldAnswers) {
     if(Object.keys(newAnswers).length === $scope.numPlayers-1){
-      WhiteCardAPI.getCards().then(function success(response){
-        var allCards = response;
-        $scope.czarPicking = true;
-        //pop pot
-        for(var key in newAnswers){
-          $scope.pot[key] = $scope.playerCards[key].splice($scope.playerCards[key].indexOf(newAnswers[key]),1)[0];
-          var newCard = shuffleArray(allCards, 1)[0];
-          $scope.playerCards[key].push(newCard);
-        }
-      }, function error(err){
-        console.log(err);
-      });
+      $scope.czarPicking = true;
+      //pop pot
+      for(var key in newAnswers){
+        $scope.pot[key] = $scope.playerCards[key].splice($scope.playerCards[key].indexOf(newAnswers[key]),1)[0];
+        var newCard = shuffleArray($scope.whiteCards, 1)[0];
+        $scope.playerCards[key].push(newCard);
+      }
     }
   });
 
@@ -90,9 +86,10 @@ angular.module('CardsCtrls', ['Services'])
       } else {
         $scope.cardCzar++
       }
-      $scope.displayCard = $scope.blackCards[pickCardIndex($scope.blackCards.length)];
-      // console.log($scope.blackCards);
-      // $scope.displayCard = $scope.blackCards.splice(pickCardIndex($scope.blackCards.length),1);
+
+      var index = pickCardIndex($scope.blackCards.length);
+      $scope.displayCard = $scope.blackCards[index];
+      $scope.blackCards.splice(index,1);
       $scope.round++;
       $scope.checkWin();
   }
@@ -132,5 +129,7 @@ function shuffleArray(arr, limit) {
   var shuffled = arr.sort(function() {
     return 0.5 - Math.random();
   });
-  return shuffled.slice(0, limit);
+
+  arr = shuffled;
+  return arr.splice(0, limit);
 }
