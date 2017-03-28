@@ -11,7 +11,7 @@ var BlackCardSchema = mongoose.Schema({
     required: true
   },
   pack: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId, ref: 'Deck'
   }
 });
 

@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 
 var DeckSchema = mongoose.Schema({
+  name: String,
   whiteCards: [
     {
       type: mongoose.Schema.Types.ObjectId, ref: 'WhiteCard'
