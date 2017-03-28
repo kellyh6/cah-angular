@@ -44,6 +44,28 @@ angular.module('AuthCtrls', ['Services'])
     });
   };
 }])
-.controller('AlertsCtrl', ['$scope', 'Alerts', function($scope, Alerts){
+.controller('AlertsCtrl', ['$scope', 'Alerts', 'sharedProperties', function($scope, Alerts, sharedProperties){
   $scope.alerts = Alerts.get();
+  $scope.playerList = [];
+
+  $scope.playerAdd = function() {
+      $scope.playerList.push($scope.playerInput);
+      $scope.playerInput = "";
+  };
+
+  $scope.assignAnswers = function() {
+    sharedProperties.setNumPlayers($scope.playerList.length);
+    sharedProperties.setPlayerList($scope.playerList);
+  };
+
+  $scope.$watchCollection("playerList", function(newVal, oldVal){
+    $scope.errorMessage = "";
+    if(newVal.length < 3){
+      $scope.errorMessage = "Need at least 3 players";
+    } else if (newVal.length > 10){
+      $scope.errorMessage = "Too many players";
+    }
+  });
+
+
 }]);

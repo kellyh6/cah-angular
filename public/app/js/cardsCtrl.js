@@ -7,6 +7,7 @@ angular.module('CardsCtrls', ['Services'])
   var CARDS_PER_PLAYER = 2;
   var MAX_ROUNDS = 5;
   $scope.playerCards = []; //[["card1", "card2"], ["card1", "card2"], ["card1", "card2"]]
+  $scope.playerList = sharedProperties.getPlayerList();
   $scope.selectedAnswers = {};
   $scope.pot = {};
   $scope.czarPicking = false;
@@ -44,15 +45,6 @@ angular.module('CardsCtrls', ['Services'])
     console.log(err);
   });
 
-  $scope.$watch("numPlayers", function(newVal, oldVal){
-    $scope.errorMessage = "";
-    if(newVal < 3){
-      $scope.errorMessage = "Need at least 3 players";
-    } else if (newVal > 10){
-      $scope.errorMessage = "Too many players";
-    }
-  });
-
   $scope.$watchCollection('selectedAnswers', function(newAnswers, oldAnswers) {
     if(Object.keys(newAnswers).length === $scope.numPlayers-1){
       $scope.czarPicking = true;
@@ -64,11 +56,6 @@ angular.module('CardsCtrls', ['Services'])
       }
     }
   });
-
-  $scope.assignAnswers = function() {
-    sharedProperties.setNumPlayers($scope.numPlayers);
-
-  };
 
   $scope.selectAnswers = function(playerIndex, card) {
     if(playerIndex != $scope.cardCzar){
@@ -97,26 +84,12 @@ angular.module('CardsCtrls', ['Services'])
   $scope.checkWin = function() {
     if ($scope.round >= MAX_ROUNDS) {
       var winner =  $scope.points.max();
-      alert("Player " + ($scope.points.indexOf(winner) + 1) + " won!")
+      alert($scope.playerList[$scope.points.indexOf(winner)] + " won!")
     }
   }
 
 
 }])
-.service("sharedProperties", function(){
-  var numPlayers = 3;
-
-  return {
-    getNumPlayers: function() {
-      return numPlayers;
-    },
-    setNumPlayers: function(value) {
-      numPlayers = value;
-    }
-  };
-});
-
-
 
 function pickCardIndex(size){
   return Math.floor(Math.random() * size);
