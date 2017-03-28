@@ -1,17 +1,25 @@
 angular.module('CardsCtrls', ['Services'])
-.controller('CardsCtrl', ['$scope', "QuestionsFactory", "AnswersFactory", "sharedProperties", function($scope, QuestionsFactory, AnswersFactory, sharedProperties) {
-  $scope.qCards = QuestionsFactory.getCards();
-  $scope.displayCard = $scope.qCards[pickCardIndex($scope.qCards.length)];
+.controller('CardsCtrl', ['$scope', "BlackCardAPI", "WhiteCardAPI", "sharedProperties", function($scope, BlackCardAPI, WhiteCardAPI, sharedProperties) {
+  $scope.blackCards = [];
+  $scope.whiteCards = [];
+  $scope.displayCard = {};
   $scope.errorMessage = "";
   var CARDS_PER_PLAYER = 2;
   var MAX_ROUNDS = 5;
-  $scope.playerCards = [];
+  $scope.playerCards = []; //[["card1", "card2"], ["card1", "card2"], ["card1", "card2"]]
   $scope.selectedAnswers = {};
   $scope.pot = {};
   $scope.czarPicking = false;
   $scope.cardCzar = 0;
   $scope.points = [];
   $scope.round = 0;
+
+  BlackCardAPI.getCards().then(function success(response){
+    $scope.blackCards = response;
+    $scope.displayCard = $scope.blackCards[pickCardIndex($scope.blackCards.length)];
+  }, function error(err){
+    console.log(err);
+  });
 
 // FIND MAX OF ARRAY METHOD
   Array.prototype.max = function() {
@@ -21,16 +29,20 @@ angular.module('CardsCtrls', ['Services'])
   $scope.numPlayers = sharedProperties.getNumPlayers();
 
   // Initialize points array
-  if($scope.points.length === 0) {    
+  if($scope.points.length === 0) {
     for (var i = 0; i < $scope.numPlayers; i++) {
         $scope.points.push(0);
       }
   }
 
-
-  for (i = 0; i < $scope.numPlayers; i++) {
-    $scope.playerCards.push(shuffleArray(AnswersFactory.getCards(), CARDS_PER_PLAYER));
-  }
+  WhiteCardAPI.getCards().then(function success(response){
+    $scope.whiteCards = response;
+    for (i = 0; i < $scope.numPlayers; i++) {
+      $scope.playerCards.push(shuffleArray($scope.whiteCards, CARDS_PER_PLAYER));
+    }
+  }, function error(err){
+    console.log(err);
+  });
 
   $scope.$watch("numPlayers", function(newVal, oldVal){
     $scope.errorMessage = "";
@@ -44,19 +56,17 @@ angular.module('CardsCtrls', ['Services'])
   $scope.$watchCollection('selectedAnswers', function(newAnswers, oldAnswers) {
     if(Object.keys(newAnswers).length === $scope.numPlayers-1){
       $scope.czarPicking = true;
-      //remove card from players hand and place cards into the pot
-      for (var key in newAnswers) {
-        if (newAnswers.hasOwnProperty(key)) {
-          $scope.pot[key] = $scope.playerCards[key].splice($scope.playerCards[key].indexOf(newAnswers[key]),1)[0];
-          //add new random card to players hand
-          $scope.playerCards[key].push(shuffleArray(AnswersFactory.getCards(), 1)[0]);
-        }
+      //pop pot
+      for(var key in newAnswers){
+        $scope.pot[key] = $scope.playerCards[key].splice($scope.playerCards[key].indexOf(newAnswers[key]),1)[0];
+        var newCard = shuffleArray($scope.whiteCards, 1)[0];
+        $scope.playerCards[key].push(newCard);
       }
     }
   });
 
   $scope.assignAnswers = function() {
-    sharedProperties.setNumPlayers($scope.numPlayers);      
+    sharedProperties.setNumPlayers($scope.numPlayers);
 
   };
 
@@ -76,7 +86,10 @@ angular.module('CardsCtrls', ['Services'])
       } else {
         $scope.cardCzar++
       }
-      $scope.displayCard = $scope.qCards[pickCardIndex($scope.qCards.length)];
+
+      var index = pickCardIndex($scope.blackCards.length);
+      $scope.displayCard = $scope.blackCards[index];
+      $scope.blackCards.splice(index,1);
       $scope.round++;
       $scope.checkWin();
   }
@@ -116,5 +129,7 @@ function shuffleArray(arr, limit) {
   var shuffled = arr.sort(function() {
     return 0.5 - Math.random();
   });
-  return shuffled.slice(0, limit);
+
+  arr = shuffled;
+  return arr.splice(0, limit);
 }
