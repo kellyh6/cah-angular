@@ -262,4 +262,4 @@ angular.module('Services', [])
 }])
 .factory('chatSocket', ['socketFactory', function(socketFactory){
   return socketFactory();
-}]);
+}])

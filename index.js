@@ -3,8 +3,9 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var app = express();
+var PORT = process.env.PORT || 3000;
 
-var http = require('http').Server(app);
+var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 //JSON web token
@@ -40,12 +41,6 @@ app.use(function (err, req, res, next) {
   }
 });
 
-io.on('connect', function(socket){
-  console.log("A user has connected")
-  // socket.on('chat message', function(msg){
-  //   io.emit('chat message', msg);
-  // });
-});
 
 // POST /api/auth - if authenticated, return a signed JWT
 app.post('/api/auth', function(req, res) {
@@ -69,9 +64,15 @@ app.post('/api/auth', function(req, res) {
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
+io.on('connection', function(socket){
+  console.log("A user has connected")
+  socket.on("disconnect", function(){
+    console.log("a user has disconnected");
+  })
+})
 
-var server = http.listen(process.env.PORT || 3000, function() {
+http.listen(PORT, function() {
   console.log("Listening on port 3000")
 });
 
-module.exports = server;
+module.exports = app;

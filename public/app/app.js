@@ -32,7 +32,11 @@ app.config([
     .state('404', {
       url: '/404',
       templateUrl: 'app/views/404.html'
-    });
+    })
+    .state("chat", {
+      url: '/chat',
+      templateUrl: 'app/views/chat.html',
+    })
 
     $locationProvider.html5Mode(true);
   }])
