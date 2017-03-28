@@ -1,7 +1,16 @@
 <div class="jumbotron">
-  <h2> Welcome <b>{{mynickname}}</b></h2>
-  <p>Send Messages and Likes below
-  </p>
+  <h2>The Answers:</h2>
+   <div ng-repeat="card in myCards track by $index">
+   <div class="row">
+     <div class='col-sm-3'>
+       <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="chooseCard($index)">
+         <h4 class="card-title">{{card.answer}}</h4>
+         <h6>Cards Against Assembly</h6>
+       </div>
+     </div>
+   </div>
+  </div>
+   <button ng-click="submitAnswer()" class="btn btn-primary">Submit!</button>
 </div>
 <br>
 <div class="row">

@@ -1,4 +1,4 @@
-angular.module('ChatCtrls', [])
+angular.module('ChatCtrls', ['Services'])
 .controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket',  function($location, $scope, $localStorage, socket){
   $scope.name = '';
   var nickname;
@@ -14,13 +14,38 @@ angular.module('ChatCtrls', [])
     $location.path('/main2')
   } 
 }])
-.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', function($scope, $localStorage, socket, lodash){
+.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', function($scope, $localStorage, socket, lodash, WhiteCardAPI){
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
         $scope.likes = [];
+        $scope.whiteCards = [];
+        $scope.selectedAnswer;
+        // $localStorage.cards = [];
+        $scope.myCards = [];
         $scope.mynickname = $localStorage.nickname;
         var nickname = $scope.mynickname;
+        
+        if (!$localStorage.cards) {
+            WhiteCardAPI.getCards().then(function success(response){
+                $scope.whiteCards = response;
+                $localStorage.cards = shuffleArray($scope.whiteCards, 2);
+                $scope.myCards = $localStorage.cards;
+                }, function error(err){
+                console.log(err);
+            });
+        } else {
+            $scope.myCards = $localStorage.cards;
+        }
+
+        $scope.submitAnswer = function() {
+            console.log("You selected", $scope.myCards[$scope.selectedAnswer])
+        }
+
+        $scope.chooseCard = function(index) {
+            $scope.selectedAnswer = index;
+            console.log($scope.selectedAnswer)
+        }
 
         socket.emit('get-users');
 
@@ -59,5 +84,17 @@ angular.module('ChatCtrls', [])
             };
             socket.emit('send-like', likeObj);
         };
+
+        function shuffleArray(arr, limit) {
+            if(limit > arr.length) {
+            limit = arr.length;
+            }
+            var shuffled = arr.sort(function() {
+            return 0.5 - Math.random();
+            });
+
+            arr = shuffled;
+            return arr.splice(0, limit);
+        }
 }])
 
