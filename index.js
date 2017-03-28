@@ -2,15 +2,19 @@ require("dotenv").config();
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
+var PORT = process.env.PORT || 3000;
+
 
 //JSON web token
 var expressJWT = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var secret = process.env.JWT_SECRET;
 
+
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+
 
 //mongoose models and connection
 var mongoose = require('mongoose');
@@ -93,13 +97,21 @@ app.post('/api/auth', function(req, res) {
   });
 });
 
+
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'));
 });
+io.on('connection', function(socket){
+  console.log("A user has connected")
+  socket.on("disconnect", function(){
+    console.log("a user has disconnected");
+  })
+})
+
 
 server.listen(process.env.PORT || 3000, function() {
   console.log("hey server");
 });
 // server = app.listen(process.env.PORT || 3000);
 
-module.exports = server;
+module.exports = app;

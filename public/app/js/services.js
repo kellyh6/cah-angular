@@ -257,5 +257,9 @@ angular.module('Services', [])
         { answer: "Whining like a little bitch."},
         { answer: "Whipping a disobedient slave."}
       ];
-    }};
+    }
+  };
+}])
+.factory('chatSocket', ['socketFactory', function(socketFactory){
+  return socketFactory();
 }])

@@ -17,7 +17,11 @@
     "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.9.1",
     "morgan": "^1.8.1",
+<<<<<<< HEAD
+    "socket.io": "^1.7.3"
+=======
     "path": "^0.12.7",
     "socket.io": "^1.4.8"
+>>>>>>> cd1dc037124d4057ead28a548602cffd3dacede1
   }
 }
