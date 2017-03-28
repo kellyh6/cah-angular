@@ -2,6 +2,22 @@
 
 
 <h2>How many people are playing?</h2>
-<input type="number" ng-model="numPlayers">
-<a href="/main" class="btn btn-success" value="Start Game" ng-click="assignAnswers()">Start Game</a>
-<p class="text-danger">{{ errorMessage }}</p>
+<div ng-controller='AlertsCtrl'>
+	<form ng-submit="playerAdd()">
+	    <input type="text" ng-model="playerInput" size="50" placeholder="User Name">
+	    <input type="submit" value="Join Game">
+	</form>
+	<p ng-bind="playerList"></p>
+<br>
+	<div ng-repeat="x in playerList">
+	<p>{{x.playerText}}</p>
+    	<!-- <input type="checkbox" ng-model="x.done"> <span ng-bind="x.playerText"></span> -->
+	</div>
+	</div>
+
+<!-- <p><button ng-click="remove()">Leave Game</button></p> -->
+
+<!-- <input type="number" ng-model="numPlayers"> -->
+	<a href="/main" class="btn btn-success" value="Start Game" ng-click="assignAnswers()">Start Game</a>
+
+	<p class="text-danger">{{ errorMessage }}</p>
