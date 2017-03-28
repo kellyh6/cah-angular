@@ -12,21 +12,28 @@ angular.module('ChatCtrls', ['Services'])
     });
 
     $location.path('/main2')
-  } 
+  }
 }])
-.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', function($scope, $localStorage, socket, lodash, WhiteCardAPI){
+.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI){
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
         $scope.likes = [];
         $scope.whiteCards = [];
+        $scope.blackCards = [];
         $scope.selectedAnswer;
         $scope.submittedAnswers = [];
-        $scope.blackCard = [];
+        $scope.blackCard = {};
         $scope.myCards = [];
         $scope.mynickname = $localStorage.nickname;
         var nickname = $scope.mynickname;
-        
+
+        BlackCardAPI.getCards().then(function success(response){
+          $scope.blackCards = response;
+        }, function error(err){
+          console.log(err);
+        });
+
         WhiteCardAPI.getCards().then(function success(response){
             $scope.whiteCards = response;
             if (!$localStorage.cards) {
@@ -39,6 +46,15 @@ angular.module('ChatCtrls', ['Services'])
             console.log(err);
         });
 
+        $scope.drawBlackCard = function(){
+          //TODO: slice
+          var card = $scope.blackCards[pickCardIndex($scope.blackCards.length)];
+          socket.emit('send-black-card', card);
+        }
+
+        socket.on('black-card-received', function(data){
+          $scope.blackCard = data;
+        });
 
         $scope.chooseCard = function(index) {
             $scope.selectedAnswer = index;
@@ -75,19 +91,18 @@ angular.module('ChatCtrls', ['Services'])
 
         $scope.submitAnswer = function() {
             if(!$scope.selectedAnswer.isNaN) {
-                socket.emit('send-card', $scope.myCards[$scope.selectedAnswer]);
-                $scope.myCards.splice($scope.selectedAnswer, 1)
-                $scope.selectedAnswer = null;
-                var newCard = shuffleArray($scope.whiteCards, 1)[0];
-                $scope.myCards.push(newCard);
-                $localStorage.cards = $scope.myCards;
-            }
+              var card = $scope.myCards[$scope.selectedAnswer];
+              socket.emit('send-card', card);
+              $scope.myCards.splice($scope.selectedAnswer, 1)
+              $scope.selectedAnswer = null;
+              var newCard = shuffleArray($scope.whiteCards, 1)[0];
+              $scope.myCards.push(newCard);
+              $localStorage.cards = $scope.myCards;
+          }
         }
-       
 
          socket.on('card-received', function(data) {
           $scope.submittedAnswers.push(data);
-          console.log($scope.submittedAnswers)
         });
 
 
@@ -112,5 +127,8 @@ angular.module('ChatCtrls', ['Services'])
             arr = shuffled;
             return arr.splice(0, limit);
         }
-}])
 
+        function pickCardIndex(size){
+          return Math.floor(Math.random() * size);
+        }
+}])

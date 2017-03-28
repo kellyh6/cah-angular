@@ -1,12 +1,21 @@
 <div class="jumbotron">
-    <div class="row">
-      <div class='col-sm-3' ng-repeat="a in submittedAnswers">
-        <div class='answer-card'>
-          <h4 class="card-title">{{a.answer}}</h4>
-          <h6>Cards Against Assembly</h6>
-        </div>
+  <div class="row">
+    <button class="btn btn-primary" ng-click="drawBlackCard()">Draw Card</button>
+    <div class='col-sm-3'>
+      <div class='card'>
+        <h4 class="card-title">{{blackCard.question}}</h4>
+        <h6>Cards Against Assembly</h6>
       </div>
     </div>
+  </div>
+  <div class="row">
+    <div class='col-sm-3' ng-repeat="a in submittedAnswers">
+      <div class='answer-card'>
+        <h4 class="card-title">{{a.answer}}</h4>
+        <h6>Cards Against Assembly</h6>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="jumbotron">
   <h2>The Answers:</h2>
