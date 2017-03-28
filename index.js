@@ -74,6 +74,10 @@ io.on('connection', function(socket){
     console.log("user disconnected");
   });
 
+  socket.on('send-card', function(data){
+    io.emit('card-received', data);
+  })
+
 });
 
 
