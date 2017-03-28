@@ -1,4 +1,4 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash']);
 
 app.config([
   '$stateProvider',
@@ -31,7 +31,17 @@ app.config([
     .state('404', {
       url: '/404',
       templateUrl: 'app/views/404.html'
-    });
+    })
+    .state('chat', {
+      url:'/chat',
+      templateUrl: 'app/views/chat.html',
+      controller: 'JoinCtrl'
+    })
+    .state('main2', {
+      url:'/main2',
+      templateUrl: 'app/views/main2.html',
+      controller: 'MainCtrl'
+    })
 
     $locationProvider.html5Mode(true);
   }])

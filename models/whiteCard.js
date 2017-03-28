@@ -7,7 +7,7 @@ var WhiteCardSchema = mongoose.Schema({
     unique: true
   },
   pack: {
-    type: String
+    type: mongoose.Schema.Types.ObjectId, ref: 'Deck'
   }
 });
 
