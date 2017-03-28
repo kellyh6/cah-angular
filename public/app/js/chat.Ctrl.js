@@ -21,26 +21,24 @@ angular.module('ChatCtrls', ['Services'])
         $scope.likes = [];
         $scope.whiteCards = [];
         $scope.selectedAnswer;
-        // $localStorage.cards = [];
+        $scope.submittedAnswers = [];
+        $scope.blackCard = [];
         $scope.myCards = [];
         $scope.mynickname = $localStorage.nickname;
         var nickname = $scope.mynickname;
         
-        if (!$localStorage.cards) {
-            WhiteCardAPI.getCards().then(function success(response){
-                $scope.whiteCards = response;
+        WhiteCardAPI.getCards().then(function success(response){
+            $scope.whiteCards = response;
+            if (!$localStorage.cards) {
                 $localStorage.cards = shuffleArray($scope.whiteCards, 2);
                 $scope.myCards = $localStorage.cards;
-                }, function error(err){
-                console.log(err);
-            });
-        } else {
-            $scope.myCards = $localStorage.cards;
-        }
+            } else {
+                $scope.myCards = $localStorage.cards;
+            }
+        }, function error(err){
+            console.log(err);
+        });
 
-        $scope.submitAnswer = function() {
-            console.log("You selected", $scope.myCards[$scope.selectedAnswer])
-        }
 
         $scope.chooseCard = function(index) {
             $scope.selectedAnswer = index;
@@ -67,13 +65,31 @@ angular.module('ChatCtrls', ['Services'])
 
         $scope.sendMessage = function(data) {
             var newMessage = {
-              message: $scope.message,
-              from: $scope.mynickname
-          };
-          socket.emit('send-message', newMessage);
+                message: $scope.message,
+                from: $scope.mynickname
+            };
+            socket.emit('send-message', newMessage);
             $scope.message = '';
             //$scope.messages.push(newMessage);
         };
+
+        $scope.submitAnswer = function() {
+            if(!$scope.selectedAnswer.isNaN) {
+                socket.emit('send-card', $scope.myCards[$scope.selectedAnswer]);
+                $scope.myCards.splice($scope.selectedAnswer, 1)
+                $scope.selectedAnswer = null;
+                var newCard = shuffleArray($scope.whiteCards, 1)[0];
+                $scope.myCards.push(newCard);
+                $localStorage.cards = $scope.myCards;
+            }
+        }
+       
+
+         socket.on('card-received', function(data) {
+          $scope.submittedAnswers.push(data);
+          console.log($scope.submittedAnswers)
+        });
+
 
         $scope.sendLike = function(user) {
             console.log(user);
