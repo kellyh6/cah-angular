@@ -10,4 +10,25 @@ router.get('/', function(req, res){
   });
 });
 
+router.post('/', function(req, res){
+  BlackCard.create(req.body, function(err, blackCard){
+    if (err) return res.status(500).send(err);
+    return res.send(blackCard);
+  });
+});
+
+router.put('/:cardId', function(req, res){
+  BlackCard.findByIdAndUpdate(req.params.cardId, req.body, function(err){
+    if(err) return res.status(500).send(err);
+    return res.send({message: 'successful black card update'});
+  });
+});
+
+router.delete('/:cardId', function(req, res){
+  BlackCard.findByIdAndRemove(req.params.cardId, function(err){
+    if (err) return res.status(500).send(err);
+    return res.send({message: 'successful black card delete'});
+  });
+});
+
 module.exports = router;
