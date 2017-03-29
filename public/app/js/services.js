@@ -78,6 +78,33 @@ angular.module('Services', [])
         console.log("error", err);
         return null;
       });
+    },
+    addCard: function(card){
+      return $http.post("api/blackCards", card)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    updateCard: function(card){
+      return $http.put("api/blackCards/" + card._id, card)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    deleteCard: function(cardId){
+      return $http.delete("api/blackCards/" + cardId)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
     }
   };
 }])
@@ -91,6 +118,33 @@ angular.module('Services', [])
           whiteCards = response.data;
         }
         return whiteCards;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    addCard: function(card){
+      return $http.post("api/whiteCards", card)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    updateCard: function(card){
+      return $http.put("api/whiteCards/" + card._id, card)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    deleteCard: function(cardId){
+      return $http.delete("api/whiteCards/" + cardId)
+      .then(function success(response){
+        return response.data;
       }, function error(err){
         console.log("error", err);
         return null;
