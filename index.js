@@ -73,6 +73,10 @@ io.on('connection', function(socket){
       io.emit('message-received', data);
   });
 
+  socket.on('send-answers', function(data){
+    io.emit('answers-received', data);
+  })
+
   socket.on('send-black-card', function(data){
     io.emit('black-card-received', data);
   });
