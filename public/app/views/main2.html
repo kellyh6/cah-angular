@@ -1,18 +1,41 @@
 <div class="jumbotron">
-    <div class="row">
-      <div class='col-sm-3' ng-repeat="a in submittedAnswers">
-        <div class='answer-card'>
-          <h4 class="card-title">{{a.answer}}</h4>
-          <h6>Cards Against Assembly</h6>
-        </div>
+  <h3 class="text-center" ng-model="round" ng-show="round !== -1">Round {{round}}</h3>
+  <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && !czarPicking && !roundWinner">{{cardCzar}} is the Card Czar</h4>
+  <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
+  <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
+  <div class="row">
+    <button class="btn btn-primary" ng-click="drawBlackCard()">Draw Card</button>
+    <div class='col-xs-3'>
+      <div class='card'>
+        <h4 class="card-title">{{blackCard.question}}</h4>
+        <h6>Cards Against Assembly</h6>
       </div>
     </div>
+  </div>
+  <div class="row">
+    <div class='col-xs-3' ng-repeat="a in submittedAnswers track by $index">
+      <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || selectWinningAnswer($index)">
+        <h4 class="card-title">{{a.answer}}</h4>
+        <h6>Cards Against Assembly</h6>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="jumbotron">
-  <h2>The Answers:</h2>
+  <div class="row">
+    <div class="col-xs-6">
+      <h4 class="text-left">Hello, <strong>{{mynickname}}</strong></h4>
+      <h4 ng-model="myscore">Score: {{myscore}}</h4>
+    </div>
+    <div class="col-xs-6">
+      <h4 class="text-danger text-right" ng-show="cardCzar === mynickname"><strong>You</strong> are Card CZAR</h4>
+    </div>
+  </div>
+
+
       <div class="row">
-        <div class='col-sm-3' ng-repeat="card in myCards track by $index">
-          <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="chooseCard($index)">
+        <div class='col-xs-3' ng-repeat="card in myCards track by $index">
+          <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
             <h4 class="card-title">{{card.answer}}</h4>
             <h6>Cards Against Assembly</h6>
           </div>
@@ -31,6 +54,7 @@
           <i class='fa fa-user'></i>
             {{user.nickname}}
         </span>
+        <span ng-show="user.nickname === mynickname"> (you)</span>
         &nbsp;
         <a href="#" ng-click="sendLike(user)">
         <i class="fa fa-thumbs-up"></i>

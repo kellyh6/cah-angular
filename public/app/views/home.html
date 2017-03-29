@@ -1,16 +1,15 @@
 <h1>Home</h1>
 
-<h2>How many people are playing?</h2>
-<div ng-controller='AlertsCtrl'>
-	<form ng-submit="playerAdd()" ng-hide="playerList.length >= 10">
+<!-- <div ng-controller='AlertsCtrl'> -->
+	<form ng-submit="join()" ng-hide="playerList.length >= 10">
 	    <input type="text" ng-model="playerInput" size="50" placeholder="User Name">
 	    <input type="submit" value="Join Game">
 	</form>
 	<br>
 	<div ng-repeat="x in playerList">
-		<p>{{x}}</p>
+		<p>{{x.nickname}}</p>
 	</div>
 
-	<a ng-show="playerList.length >= 3 && playerList.length <= 10" href="/main" class="btn btn-success" value="Start Game" ng-click="assignAnswers()" >Start Game</a>
+	<!-- <a ng-show="playerList.length >= 3 && playerList.length <= 10" class="btn btn-success" value="Start Game" ng-click="startGame()" >Start Game</a> -->
+	<a class="btn btn-success" value="Start Game" ng-click="startGame()" >Start Game</a>
 	<p class="text-danger">{{ errorMessage }}</p>
-</div>
