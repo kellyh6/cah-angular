@@ -10,4 +10,25 @@ router.get('/', function(req, res){
   });
 });
 
+router.post('/', function(req, res){
+  WhiteCard.create(req.body, function(err, whiteCard){
+    if (err) return res.status(500).send(err);
+    return res.send(whiteCard);
+  });
+});
+
+router.put('/:cardId', function(req, res){
+  WhiteCard.findByIdAndUpdate(req.params.cardId, req.body, function(err){
+    if (err) return res.status(500).send(err);
+    return res.send({message: 'successful white card update'});
+  });
+});
+
+router.delete('/:cardId', function(req, res){
+  WhiteCard.findByIdAndRemove(req.params.cardId, function(err) {
+    if (err) return res.status(500).send(err);
+    return res.send({message: 'successful white card delete'});
+  });
+});
+
 module.exports = router;
