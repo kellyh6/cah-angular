@@ -4,7 +4,7 @@
   <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
   <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
   <div class="row">
-    <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner" ng-click="drawBlackCard()">Draw Card</button>
+    <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
     <div class='col-xs-3'>
       <div class='card'>
         <h4 class="card-title">{{blackCard.question}}</h4>
@@ -15,7 +15,7 @@
   <div class="row">
     <div class='col-xs-3' ng-repeat="a in submittedAnswers track by $index">
       <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || chooseWinningcard($index)">
-        <h4 class="card-title">{{a.answer}}</h4>
+        <h4 class="card-title" ng-show="czarPicking">{{a.answer}}</h4>
         <h6>Cards Against Assembly</h6>
       </div>
     </div>
@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-   <button ng-click="submitAnswer()" class="btn btn-primary">Submit!</button>
+   <button ng-click="submitAnswer()" ng-show="!czarPicking" ng-hide="cardCzar === mynickname" class="btn btn-primary">Submit!</button>
 </div>
 <br>
 <div class="row">

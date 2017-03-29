@@ -34,6 +34,7 @@ angular.module('ChatCtrls', ['Services'])
     }
   }
 
+
   $scope.startGame = function(){
     // $location.path("/main2");
     $state.go("main2");
@@ -91,8 +92,8 @@ angular.module('ChatCtrls', ['Services'])
         });
 
         $scope.drawBlackCard = function(){
-          //TODO: slice
-          var card = $scope.blackCards[pickCardIndex($scope.blackCards.length)];
+          var ind = pickCardIndex($scope.blackCards.length)
+          var card = $scope.blackCards.splice(ind, 1)[0];
           czarIndex = $scope.cardCzarIndex;
           if($scope.cardCzar === 0 || $scope.cardCzar === $scope.users[$scope.users.length-1].nickname){
             czarIndex = 0;
@@ -104,9 +105,11 @@ angular.module('ChatCtrls', ['Services'])
           socket.emit('send-black-card', card);
           socket.emit('new-round');
         }
+        
 
         socket.on('black-card-received', function(data){
           $scope.blackCard = data;
+          $scope.czarPicking = false;
           $scope.cardCzar = data.cardCzar;
           $scope.cardCzarIndex = data.cardCzarIndex;
         });
@@ -135,6 +138,7 @@ angular.module('ChatCtrls', ['Services'])
         });
 
         $scope.sendMessage = function(data) {
+          if($scope.message != "" && $scope.message){
             var newMessage = {
                 message: $scope.message,
                 from: $scope.mynickname
@@ -142,6 +146,7 @@ angular.module('ChatCtrls', ['Services'])
             socket.emit('send-message', newMessage);
             $scope.message = '';
             //$scope.messages.push(newMessage);
+          }
         };
 
         $scope.submitAnswer = function() {
@@ -164,8 +169,17 @@ angular.module('ChatCtrls', ['Services'])
         $scope.$watchCollection('submittedAnswers', function(newAnswers, oldAnswers){
           if(newAnswers.length === $scope.users.length-1){
             $scope.czarPicking = true;
+          //   var obj = {
+          //     submittedAnswers: shuffleArray($scope.submittedAnswers, $scope.submittedAnswers.length)
+          //   }
+          //   console.log(obj);
+          //  socket.emit('send-answers', obj);
           }
         });
+
+        socket.on('answers-received', function(data){
+          $scope.submittedAnswers = data.submittedAnswers;
+        })
 
         $scope.chooseWinningcard = function(index){
           if($scope.mynickname === $scope.cardCzar){
@@ -188,7 +202,6 @@ angular.module('ChatCtrls', ['Services'])
         socket.on('winner-received', function(data){
           $scope.roundWinnerIndex = data.roundWinnerIndex;
           $scope.roundWinner = data.roundWinner;
-          $scope.czarPicking = false;
           if($scope.roundWinner === $scope.mynickname){
             $scope.myscore++;
           }
