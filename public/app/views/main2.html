@@ -1,8 +1,8 @@
 <div class="jumbotron">
   <h3 class="text-center" ng-model="round" ng-show="round !== -1">Round {{round}}</h3>
-  <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && !czarPicking && !roundWinner">{{cardCzar}} is the Card Czar</h4>
-  <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
-  <h4 class="text-danger text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
+  <h4 class="text-center" ng-show="cardCzar !== 0 && !czarPicking && !roundWinner">{{cardCzar}} is the Card Czar</h4>
+  <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
+  <h4 class="text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
   <div class="row">
     <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
     <div class='col-xs-3'>
@@ -22,7 +22,7 @@
     <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
   </div>
 </div>
-<div class="jumbotron">
+<div class="jumbotron my-hand">
   <div class="row">
     <div class="col-xs-6">
       <h4 class="text-left">Hello, <strong>{{mynickname}}</strong></h4>

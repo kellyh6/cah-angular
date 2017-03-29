@@ -2,6 +2,7 @@ angular.module('ChatCtrls', ['Services'])
 .controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state',  function($location, $scope, $localStorage, socket, $state){
   $scope.playerInput = '';
   $scope.playerList = [];
+  $scope.mynickname = '';
   var nickname;
 
   socket.emit('get-users');
@@ -23,6 +24,7 @@ angular.module('ChatCtrls', ['Services'])
     if($scope.playerInput !==""){
       nickname = $scope.playerInput;
       $localStorage.nickname = nickname;
+      $scope.mynickname = $localStorage.nickname;
       $localStorage.score = 0;
 
       socket.emit('join', {
@@ -105,7 +107,7 @@ angular.module('ChatCtrls', ['Services'])
           socket.emit('send-black-card', card);
           socket.emit('new-round');
         }
-        
+
 
         socket.on('black-card-received', function(data){
           $scope.blackCard = data;
