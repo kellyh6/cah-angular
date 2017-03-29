@@ -1,4 +1,4 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls', 'BuildCtrls']);
 
 app.config([
   '$stateProvider',
@@ -31,8 +31,22 @@ app.config([
     .state('404', {
       url: '/404',
       templateUrl: 'app/views/404.html'
-    });
-
+    })
+    .state('chat', {
+      url:'/chat',
+      templateUrl: 'app/views/chat.html',
+      controller: 'JoinCtrl'
+    })
+    .state('main2', {
+      url:'/main2',
+      templateUrl: 'app/views/main2.html',
+      controller: 'MainCtrl'
+    })
+    .state('build', {
+      url:'/build',
+      templateUrl: 'app/views/build.html',
+      controller: 'BuildCtrl'
+    })
     $locationProvider.html5Mode(true);
   }])
   .config(["$httpProvider", function($httpProvider){

@@ -24,26 +24,26 @@ h1 {
   max-width: 100px;
 }
 h1:after, .card h6:after,
-.answer-card h6:after {
+.answer-card, .newWhiteCard h6:after {
   content: "™";
   font-size: 1rem;
   vertical-align: super;
   margin-left: 0.192rem;
 }
 
-.card {
+.card, .newBlackCard {
   color: white;
   background: #231e1e;
 }
 
-.answer-card {
+.answer-card,{
   background: white;
   color: black;
   width: 100%;
   margin-bottom: 10px;
 }
 
-.card-back h4:after {
+.card-back h4:after,{
   content: "Cards Against Humanity";
   width: inherit;
   font-size: 1.5em;
@@ -51,7 +51,7 @@ h1:after, .card h6:after,
 }
 
 .card,
-.answer-card {
+.answer-card, .newWhiteCard, .newBlackCard {
   border: 1px solid black;
   border-radius: 15px;
   padding: 1rem;
@@ -91,3 +91,30 @@ footer {
 footer .heart {
   color:#cf2e31;
 }
+.newBlackCard {
+  height: 400px;
+  width: 300px;
+  font-size: 60px;
+  text-align: center;
+}
+
+.newWhiteCard {
+  height: 400px;
+  width: 300px;
+  font-size: 60px;
+  text-align: center;
+  color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
