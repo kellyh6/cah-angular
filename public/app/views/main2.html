@@ -1,39 +1,39 @@
-<div class="jumbotron">
-  <h3 class="text-center" ng-model="round" ng-show="round !== -1">Round {{round}}</h3>
-  <h4 class="text-center" ng-show="cardCzar !== 0 && !czarPicking && !roundWinner">{{cardCzar}} is the Card Czar</h4>
-  <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
-  <h4 class="text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
-  <div class="row">
-    <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
-    <div class='col-xs-3'>
-      <div class='card'>
-        <h4 class="card-title">{{blackCard.question}}</h4>
-        <h6>Cards Against Assembly</h6>
+<div class="row">
+  <div class="col-xs-10">
+    <div class="jumbotron">
+      <h3 class="text-center" ng-model="round" ng-show="round !== -1">Round {{round}}</h3>
+      <h4 class="text-center" ng-show="cardCzar !== 0 && !czarPicking && !roundWinner">{{cardCzar}} is the Card Czar</h4>
+      <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
+      <h4 class="text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
+      <div class="row">
+        <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
+        <div class='col-xs-3'>
+          <div class='card'>
+            <h4 class="card-title">{{blackCard.question}}</h4>
+            <h6>Cards Against Assembly</h6>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class='col-xs-3' ng-repeat="a in submittedAnswers track by $index">
+          <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || chooseWinningcard($index)">
+            <h4 class="card-title" ng-show="czarPicking">{{a.answer}}</h4>
+            <h6>Cards Against Assembly</h6>
+          </div>
+        </div>
+        <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class='col-xs-3' ng-repeat="a in submittedAnswers track by $index">
-      <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || chooseWinningcard($index)">
-        <h4 class="card-title" ng-show="czarPicking">{{a.answer}}</h4>
-        <h6>Cards Against Assembly</h6>
+    <div class="jumbotron my-hand">
+      <div class="row">
+        <div class="col-xs-6">
+          <h4 class="text-left">Hello, <strong>{{mynickname}}</strong></h4>
+          <h4 ng-model="myscore">Score: {{myscore}}</h4>
+        </div>
+        <div class="col-xs-6">
+          <h4 class="text-danger text-right" ng-show="cardCzar === mynickname"><strong>You</strong> are Card CZAR</h4>
+        </div>
       </div>
-    </div>
-    <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
-  </div>
-</div>
-<div class="jumbotron my-hand">
-  <div class="row">
-    <div class="col-xs-6">
-      <h4 class="text-left">Hello, <strong>{{mynickname}}</strong></h4>
-      <h4 ng-model="myscore">Score: {{myscore}}</h4>
-    </div>
-    <div class="col-xs-6">
-      <h4 class="text-danger text-right" ng-show="cardCzar === mynickname"><strong>You</strong> are Card CZAR</h4>
-    </div>
-  </div>
-
-
       <div class="row">
         <div class='col-xs-3' ng-repeat="card in myCards track by $index">
           <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
@@ -42,66 +42,58 @@
           </div>
         </div>
       </div>
-   <button ng-click="submitAnswer()" ng-show="!czarPicking" ng-hide="cardCzar === mynickname" class="btn btn-primary">Submit!</button>
-</div>
-<br>
-<div class="row">
-  <div class="col-md-2">
-    <small class="marker">Other Users</small>
-    <ul class="list-unstyled">
-      <li class="user"
-           ng-repeat="user in users track by $index">
-        <span class='label btn-mini label-default userlabel'>
-          <i class='fa fa-user'></i>
-            {{user.nickname}}
-        </span>
-        <span ng-show="user.nickname === mynickname"> (you)</span>
-        &nbsp;
-        <a href="#" ng-click="sendLike(user)">
-        <i class="fa fa-thumbs-up"></i>
-        </a>
-        </li>
-      </ul>
+       <button ng-click="submitAnswer()" ng-show="!czarPicking" ng-hide="cardCzar === mynickname" class="btn btn-primary">Submit!</button>
     </div>
-
-  <div class="col-md-2">
-    <small class="marker">Likes</small>
-    <ul class="list-unstyled">
-      <li ng-repeat='username in likes track by $index'>
-        <span class='label btn-mini label-default userlabel' >
-          <i class='fa fa-thumbs-o-up'></i>
-          {{username}}
-         </span>
-         <small class="text-primary">&nbsp; sent like</small>
-      </li>
-    </ul>
   </div>
+  <div class="col-xs-2 chat">
 
-  <div class="col-md-8">
-    <form ng-submit='sendMessage()'>
-      <div class='input-group'>
-        <input class='input-sm form-control'
-                    ng-model='message'
-                    type='text'
-                    placeholder="Type a message...">
-        <span class='input-group-btn'>
-          <input class='input-sm btn btn-default'
-          type='submit'
-          value='Send'>
-        </span>
+    <div class="row">
+      <div class="col-xs-6">
+        <p class="marker"><strong>Players</strong></p>
+        <p ng-repeat="user in users track by $index"><i class='fa fa-user'></i> {{user.nickname}} <span ng-show="user.nickname === mynickname"> (you)</span></p>
       </div>
-    </form>
-    <br>
-    <div class='well chatbox' id='chat_history'>
-      <ul class='list-unstyled'>
-        <li ng-repeat='m in messages'>
-          <i class='fa fa-comment'></i>
-          &nbsp;
-          <b>{{m.from}} </b>:
-          &nbsp;
-          {{m.message}}
-        </li>
-      </ul>
+      <div class="col-xs-6">
+        <p class="marker"><strong>Score</strong></p>
+        <p>0</p>
+        <p>0</p>
+        <p>0</p>
+      </div>
     </div>
+
+
+    <div class="row">
+      <div class="col-xs-12">
+        <form ng-submit='sendMessage()'>
+          <div class='input-group'>
+            <input class='input-sm form-control'
+                        ng-model='message'
+                        type='text'
+                        placeholder="Type a message...">
+            <span class='input-group-btn'>
+              <input class='input-sm btn btn-default'
+              type='submit'
+              value='Send'>
+            </span>
+          </div>
+        </form>
+        <br>
+        <div class='well chatbox' id='chat_history'>
+          <ul class='list-unstyled'>
+            <li ng-repeat='m in messages'>
+              <b>{{m.from}} </b>:
+              &nbsp;
+              {{m.message}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
+
+
+
+
+
+<br>

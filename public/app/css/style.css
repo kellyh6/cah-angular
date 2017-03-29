@@ -7,6 +7,19 @@ body {
   background-color: black;
 }
 
+.chat {
+  background-color: black;
+  color: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100vh;
+}
+
+.chatbox {
+  color: black;
+}
+
 .jumbotron {
   background-color: rgba(0,0,0,0);
 }
@@ -84,7 +97,7 @@ h1 {
   border: 1px solid black;
   border-radius: 15px;
   padding: 1rem;
-  min-height: 16em;
+  min-height: 20em;
   position: relative;
 }
 
