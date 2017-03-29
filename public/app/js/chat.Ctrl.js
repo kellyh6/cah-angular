@@ -58,6 +58,8 @@ angular.module('ChatCtrls', ['Services'])
         $scope.czarPicking = false;
         $scope.whiteCards = [];
         $scope.blackCards = [];
+        $scope.userCardsPicked = 0;
+        $scope.blanks;
         $scope.selectedAnswer;
         $scope.submittedAnswers = [];
         $scope.blackCard = {};
@@ -93,6 +95,18 @@ angular.module('ChatCtrls', ['Services'])
             console.log(err);
         });
 
+        $scope.canSubmit = function(){
+          if (!$scope.czarPicking && $scope.userCardsPicked != $scope.blanks && $scope.blackCard.question) {
+            return true;
+          } else {
+            return false
+            console.log($scope.czarPicking)
+            console.log($scope.userCardsPicked < $scope.blanks)
+            console.log($$scope.cardCzar !== $scope.mynickname)
+          }
+        }
+
+
         $scope.drawBlackCard = function(){
           var ind = pickCardIndex($scope.blackCards.length)
           var card = $scope.blackCards.splice(ind, 1)[0];
@@ -108,9 +122,10 @@ angular.module('ChatCtrls', ['Services'])
           socket.emit('new-round');
         }
 
-
         socket.on('black-card-received', function(data){
           $scope.blackCard = data;
+          $scope.userCardsPicked = 0;
+          $scope.blanks = data.blanks;
           $scope.czarPicking = false;
           $scope.cardCzar = data.cardCzar;
           $scope.cardCzarIndex = data.cardCzarIndex;
@@ -161,6 +176,9 @@ angular.module('ChatCtrls', ['Services'])
               var newCard = shuffleArray($scope.whiteCards, 1)[0];
               $scope.myCards.push(newCard);
               $localStorage.cards = $scope.myCards;
+              $scope.userCardsPicked = $scope.userCardsPicked + 1;
+              console.log("userCards", $scope.userCardsPicked);
+              console.log("blanks", $scope.blanks);
           }
         }
 
@@ -169,7 +187,7 @@ angular.module('ChatCtrls', ['Services'])
         });
 
         $scope.$watchCollection('submittedAnswers', function(newAnswers, oldAnswers){
-          if(newAnswers.length === $scope.users.length-1){
+          if(newAnswers.length === (($scope.users.length-1) * $scope.blanks)){
             $scope.czarPicking = true;
           //   var obj = {
           //     submittedAnswers: shuffleArray($scope.submittedAnswers, $scope.submittedAnswers.length)
@@ -200,10 +218,19 @@ angular.module('ChatCtrls', ['Services'])
             }
           }
         }
+        
+        var findIndexOfWinner = function(winner){
+          return $scope.users.findIndex(users => users.nickname === winner);
+        }
 
         socket.on('winner-received', function(data){
           $scope.roundWinnerIndex = data.roundWinnerIndex;
           $scope.roundWinner = data.roundWinner;
+          var index = findIndexOfWinner($scope.roundWinner)
+          console.log("index", index)
+          console.log($scope.users[index])
+          $scope.users[index].score = (($scope.users[index].score || 0 ) + 1)
+          console.log($scope.users[index].score)
           if($scope.roundWinner === $scope.mynickname){
             $scope.myscore++;
           }

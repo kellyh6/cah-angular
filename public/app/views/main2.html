@@ -42,24 +42,22 @@
           </div>
         </div>
       </div>
-       <button ng-click="submitAnswer()" ng-show="!czarPicking" ng-hide="cardCzar === mynickname" class="btn btn-primary">Submit!</button>
-    </div>
-  </div>
-  <div class="col-xs-2 chat">
+   <button ng-click="submitAnswer()" ng-show="canSubmit()" class="btn btn-primary">Submit!</button>
+</div>
 
+  <div class="col-xs-2 chat">
     <div class="row">
       <div class="col-xs-6">
         <p class="marker"><strong>Players</strong></p>
         <p ng-repeat="user in users track by $index"><i class='fa fa-user'></i> {{user.nickname}} <span ng-show="user.nickname === mynickname"> (you)</span></p>
       </div>
       <div class="col-xs-6">
-        <p class="marker"><strong>Score</strong></p>
-        <p>0</p>
-        <p>0</p>
-        <p>0</p>
+        <p class="marker"><strong>Score</strong></p>        
+        <p ng-repeat='u in users track by $index'>        
+          <span ng-show="!u.score">0 </span>{{u.score}}<span> Points</span>
+         </p>
       </div>
     </div>
-
 
     <div class="row">
       <div class="col-xs-12">
@@ -91,9 +89,3 @@
 
   </div>
 </div>
-
-
-
-
-
-<br>
