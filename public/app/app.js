@@ -11,7 +11,7 @@ app.config([
     .state('home', {
       url: '/',
       templateUrl: 'app/views/home.html',
-      controller: 'CardsCtrl'
+      controller: 'JoinCtrl'
     })
     .state('main', {
     url:"/main",

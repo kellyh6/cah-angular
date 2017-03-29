@@ -50,10 +50,12 @@ app.use(function (err, req, res, next) {
 io.on('connection', function(socket){
   console.log('a user connected');
 
+  socket.on('get-users', function() {
+    socket.emit('all-users', users);
+  });
+
   //new user
   socket.on('join', function(data){
-      console.log(data);
-      console.log(users);
       //User name
       socket.nickname = data.nickname;
       users[socket.nickname] = socket; 
@@ -81,7 +83,15 @@ io.on('connection', function(socket){
 
   socket.on('send-card', function(data){
     io.emit('card-received', data);
-  })
+  });
+
+  socket.on('send-winner', function(data){
+    io.emit('winner-received', data);
+  });
+
+  socket.on('new-round', function(){
+    io.emit('new-round-received');
+  });
 
 });
 

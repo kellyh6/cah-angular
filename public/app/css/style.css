@@ -91,3 +91,7 @@ footer {
 footer .heart {
   color:#cf2e31;
 }
+
+.jumbotron {
+  padding-top: 10px;
+}
