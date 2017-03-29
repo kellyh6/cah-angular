@@ -14,11 +14,12 @@
   </div>
   <div class="row">
     <div class='col-xs-3' ng-repeat="a in submittedAnswers track by $index">
-      <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || selectWinningAnswer($index)">
+      <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || chooseWinningcard($index)">
         <h4 class="card-title">{{a.answer}}</h4>
         <h6>Cards Against Assembly</h6>
       </div>
     </div>
+    <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
   </div>
 </div>
 <div class="jumbotron">

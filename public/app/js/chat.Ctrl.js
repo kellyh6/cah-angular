@@ -167,13 +167,21 @@ angular.module('ChatCtrls', ['Services'])
           }
         });
 
-        $scope.selectWinningAnswer = function(index){
+        $scope.chooseWinningcard = function(index){
           if($scope.mynickname === $scope.cardCzar){
-            var winner = {
-              roundWinnerIndex: index,
-              roundWinner: $scope.submittedAnswers[index].nickname
+            $scope.roundWinnerIndex = index;
+          }
+        }
+
+        $scope.selectWinningAnswer = function(){
+          if($scope.mynickname === $scope.cardCzar){
+            if($scope.roundWinnerIndex !== null){
+              var winner = {
+                roundWinnerIndex: $scope.roundWinnerIndex,
+                roundWinner: $scope.submittedAnswers[$scope.roundWinnerIndex].nickname
+              }
+              socket.emit('send-winner', winner);
             }
-            socket.emit('send-winner', winner);
           }
         }
 
