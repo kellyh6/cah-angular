@@ -42,7 +42,7 @@
           </div>
         </div>
       </div>
-   <button ng-click="submitAnswer()" ng-show="!czarPicking" ng-hide="cardCzar === mynickname" class="btn btn-primary">Submit!</button>
+   <button ng-click="submitAnswer()" ng-show="canSubmit()" class="btn btn-primary">Submit!</button>
 </div>
 <br>
 <div class="row">
@@ -65,14 +65,12 @@
     </div>
 
   <div class="col-md-2">
-    <small class="marker">Likes</small>
+    <small class="marker">Score</small>
     <ul class="list-unstyled">
-      <li ng-repeat='username in likes track by $index'>
+      <li ng-repeat='u in users track by $index'>
         <span class='label btn-mini label-default userlabel' >
-          <i class='fa fa-thumbs-o-up'></i>
-          {{username}}
+          <span ng-show="!u.score">0 </span>{{u.score}}<span> Points</span>
          </span>
-         <small class="text-primary">&nbsp; sent like</small>
       </li>
     </ul>
   </div>
