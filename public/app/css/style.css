@@ -8,25 +8,24 @@ body {
 }
 
 .chat {
-  background-color: black;
+  background-color: rgba(0,0,0,.5);
   color: white;
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: 0px;
   right: 0;
   height: 100vh;
 }
 
 .chatbox {
   color: black;
+  overflow: scroll;
+  height: 70vh;
 }
 
 .jumbotron {
   background-color: rgba(0,0,0,0);
 }
-.my-hand {
-  background-color: rgba(0,0,0,0.1);
-  border: 1px solid rgba(0,0,0,0.5);
-}
+
 
 .white {
   color:white;
@@ -36,6 +35,7 @@ body {
   background-color: rgba(0,0,0, 0.5);
   border-color: rgba(0,0,0,0);
   border-radius: 0px;
+  width: 83.3%;
 }
 
 .nickname-input {

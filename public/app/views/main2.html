@@ -24,7 +24,7 @@
         <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
       </div>
     </div>
-    <div class="jumbotron my-hand">
+    <div class="jumbotron">
       <div class="row">
         <div class="col-xs-6">
           <h4 class="text-left">Hello, <strong>{{mynickname}}</strong></h4>
@@ -39,6 +39,7 @@
           <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
             <h4 class="card-title">{{card.answer}}</h4>
             <h6>Cards Against Assembly</h6>
+            
           </div>
         </div>
       </div>
@@ -78,7 +79,7 @@
         <div class='well chatbox' id='chat_history'>
           <ul class='list-unstyled'>
             <li ng-repeat='m in messages'>
-              <b>{{m.from}} </b>:
+              <b>{{m.from}}<span ng-show="m.from === mynickname"> (you)</span></b>:
               &nbsp;
               {{m.message}}
             </li>
