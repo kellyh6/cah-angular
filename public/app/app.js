@@ -1,4 +1,4 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls', 'BuildCtrls']);
 
 app.config([
   '$stateProvider',
@@ -12,6 +12,11 @@ app.config([
       url: '/',
       templateUrl: 'app/views/home.html',
       controller: 'JoinCtrl'
+    })
+    .state('build', {
+      url: '/build',
+      templateUrl: 'app/views/build.html',
+      controller: 'BuildCtrl'
     })
     .state('join', {
       url: '/:roomId',
