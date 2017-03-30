@@ -24,7 +24,7 @@
         <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
       </div>
     </div>
-    <div class="jumbotron my-hand">
+    <div class="jumbotron">
       <div class="row">
         <div class="col-xs-6">
           <h4 class="text-left">Hello, <strong>{{mynickname}}</strong></h4>
@@ -39,18 +39,14 @@
           <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
             <h4 class="card-title">{{card.answer}}</h4>
             <h6>Cards Against Assembly</h6>
+            
           </div>
         </div>
       </div>
    <button ng-click="submitAnswer()" ng-show="canSubmit()" class="btn btn-primary">Submit!</button>
 </div>
 
-  <!-- <div class="col-xs-2 chat">
-
-  </div> -->
 </div>
-
-
   <div class="chat col-xs-2">
     <p class="marker"><strong>Players</strong></p>
     <p ng-repeat="user in users track by $index">
@@ -59,8 +55,6 @@
       <span ng-show="!user.score">0 </span>{{user.score}}<span> appletinis</span>
     </p>
 
-
-  <!-- <div class="row"> -->
     <div class="col-xs-12">
       <form ng-submit='sendMessage()'>
         <div class='input-group'>
