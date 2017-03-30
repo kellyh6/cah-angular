@@ -9,7 +9,7 @@ app.config([
 
     $stateProvider
     .state('home', {
-      url: '/',
+      url: '/:roomId',
       templateUrl: 'app/views/home.html',
       controller: 'JoinCtrl'
     })
@@ -38,7 +38,7 @@ app.config([
       controller: 'JoinCtrl'
     })
     .state('main2', {
-      url:'/main2',
+      url:'/main2/:roomId',
       templateUrl: 'app/views/main2.html',
       controller: 'MainCtrl'
     })

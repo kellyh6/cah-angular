@@ -1,12 +1,12 @@
 angular.module('ChatCtrls', ['Services'])
-.controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state',  function($location, $scope, $localStorage, socket, $state){
+.controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state', '$stateParams',  function($location, $scope, $localStorage, socket, $state, $stateParams){
   $scope.playerInput = '';
   $scope.playerList = [];
   $scope.mynickname = '';
   var nickname;
 
   socket.emit('get-users');
-
+  
   socket.on('all-users', function(data){
     $scope.playerList = data;
   });
@@ -28,7 +28,8 @@ angular.module('ChatCtrls', ['Services'])
       $localStorage.score = 0;
 
       socket.emit('join', {
-        nickname: nickname
+        nickname: nickname,
+        rooms: $stateParams.roomId
       });
       $scope.playerInput = "";
     } else {
@@ -38,8 +39,8 @@ angular.module('ChatCtrls', ['Services'])
 
 
   $scope.startGame = function(){
-    // $location.path("/main2");
-    $state.go("main2");
+    $location.path("/main2/" + $stateParams.roomId);
+    // $state.go("main2" + $stateParams.roomId);
   }
 
   $scope.assignAnswers = function() {
@@ -48,7 +49,7 @@ angular.module('ChatCtrls', ['Services'])
   };
 
 }])
-.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI){
+.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams){
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
@@ -67,15 +68,24 @@ angular.module('ChatCtrls', ['Services'])
         $scope.cardCzar = 0;
         $scope.cardCzarIndex = null;
         $scope.round = -1;
+        // ROOMS ------ ADDED ROOM -> WORKING
+        $scope.room = $stateParams.roomId
+        $scope.rooms = ["123"];
+        // ****
         $scope.myscore = $localStorage.score;
         $scope.mynickname = $localStorage.nickname;
         var nickname = $scope.mynickname;
 
         socket.emit('get-users');
+          socket.on('connection', function(socket){
+            console.log("a user connected to " + $scope.room)
+        })
+        
 
         socket.on('all-users', function(data) {
             $scope.users = data;
         });
+        
 
         BlackCardAPI.getCards().then(function success(response){
           $scope.blackCards = response;
@@ -154,11 +164,13 @@ angular.module('ChatCtrls', ['Services'])
             $scope.likes.push(data.from);
         });
 
+
         $scope.sendMessage = function(data) {
           if($scope.message != "" && $scope.message){
             var newMessage = {
                 message: $scope.message,
-                from: $scope.mynickname
+                from: $scope.mynickname,
+                roomId: $scope.room
             };
             socket.emit('send-message', newMessage);
             $scope.message = '';
