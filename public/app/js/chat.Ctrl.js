@@ -2,6 +2,7 @@ angular.module('ChatCtrls', ['Services'])
 .controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state', '$stateParams',  function($location, $scope, $localStorage, socket, $state, $stateParams){
   $scope.playerInput = '';
   $scope.playerList = [];
+  $scope.nicknames = [];
   $scope.mynickname = '';
   var nickname;
   $scope.privateRoom = window.location.href;
@@ -23,6 +24,10 @@ angular.module('ChatCtrls', ['Services'])
   socket.emit('get-users');
   socket.on('all-users', function(data){
     $scope.playerList = data;
+    $scope.nicknames = [];
+    data.forEach(function(d){
+      $scope.nicknames.push(d.nickname);
+    });
   });
 
   $scope.$watchCollection("playerList", function(newVal, oldVal){
@@ -36,17 +41,22 @@ angular.module('ChatCtrls', ['Services'])
 
   $scope.join = function(){
     if($scope.playerInput !==""){
-      nickname = $scope.playerInput;
-      $localStorage.nickname = nickname;
-      $scope.mynickname = $localStorage.nickname;
-      socket.emit('join', {
-        nickname: nickname,
-        socketid: socket.id,
-        room: $stateParams.roomId,
-        host: false
-      });
-      $scope.playerInput = "";
-    } else {
+      if($scope.nicknames.includes($scope.playerInput)){
+        $scope.errorMessage = "Usernames must be unique";
+      } else {
+        nickname = $scope.playerInput;
+        $localStorage.nickname = nickname;
+        $scope.mynickname = $localStorage.nickname;
+        socket.emit('join', {
+          nickname: nickname,
+          socketid: socket.id,
+          room: $stateParams.roomId,
+          host: false
+        });
+        $scope.playerInput = "";
+      }
+    }
+    else {
       $scope.errorMessage = "Username can't be blank";
     }
   }
@@ -61,6 +71,7 @@ angular.module('ChatCtrls', ['Services'])
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
+        $scope.nicknames = [];
         $scope.likes = [];
         $scope.roundWinner = '';
         $scope.roundWinnerIndex = null;
@@ -80,19 +91,24 @@ angular.module('ChatCtrls', ['Services'])
         // ROOMS ------ ADDED ROOM -> WORKING
         $scope.room = $stateParams.roomId
         // ****
-        $scope.myscore = $localStorage.score;
+        $scope.myscore = $localStorage.score || 0;
         $scope.mynickname = $localStorage.nickname;
         var nickname = $scope.mynickname;
+        $localStorage.cards = [];
 
         socket.emit('get-users');
           socket.on('connection', function(socket){
             console.log("a user connected to " + $scope.room)
         })
-        
+
         socket.on('all-users', function(data) {
             $scope.users = data;
+            $scope.nicknames = [];
+            data.forEach(function(d){
+              $scope.nicknames.push(d.nickname);
+            });
         });
-        
+
 
         BlackCardAPI.getCards().then(function success(response){
           $scope.blackCards = response;
@@ -100,31 +116,63 @@ angular.module('ChatCtrls', ['Services'])
           console.log(err);
         });
 
-        WhiteCardAPI.getCards().then(function success(response){
-            $scope.whiteCards = response;
-            if (!$localStorage.cards) {
-                $localStorage.cards = shuffleArray($scope.whiteCards, 10);
-                $scope.myCards = $localStorage.cards;
-            } else {
-                $scope.myCards = $localStorage.cards;
-            }
-        }, function error(err){
-            console.log(err);
+        socket.on('player-hands-received', function(data){
+          var index = $scope.nicknames.indexOf($scope.mynickname);
+          if($localStorage.cards){
+            $localStorage.cards = $localStorage.cards.concat(data.playerCards[index]);
+          } else {
+            $localStorage.cards = data.playerCards[index];
+          }
+          $scope.myCards = $localStorage.cards;
+          $scope.whiteCards = data.whiteCards;
+          console.log("white cards length = " + $scope.whiteCards.length);
         });
 
         $scope.canSubmit = function(){
-          if (!$scope.czarPicking && $scope.userCardsPicked != $scope.blanks && $scope.blackCard.question) {
+          if (!$scope.czarPicking && $scope.userCardsPicked !== $scope.blanks && $scope.blackCard.question && $scope.selectedAnswer) {
             return true;
           } else {
             return false
-            console.log($scope.czarPicking)
-            console.log($scope.userCardsPicked < $scope.blanks)
-            console.log($$scope.cardCzar !== $scope.mynickname)
           }
         }
 
 
         $scope.drawBlackCard = function(){
+          if($scope.cardCzar === 0){
+            WhiteCardAPI.getCards().then(function success(response){
+                var whiteCards = response;
+                var playerCards = [];
+                for(var i = 0; i < $scope.users.length;i++){
+                  var hand = shuffleArray(whiteCards, 10);
+                  playerCards.push(hand);
+                }
+
+                var obj = {
+                  playerCards: playerCards,
+                  whiteCards: whiteCards
+                };
+
+                socket.emit('send-player-hands', obj);
+            }, function error(err){
+                console.log(err);
+            });
+          } else {
+            var playerCards = [];
+            for(var i = 0; i < $scope.users.length; i++){
+              var newCard = [];
+              if($scope.cardCzar !== $scope.users[i].nickname){
+                newCard = shuffleArray($scope.whiteCards, $scope.blanks);
+              }
+              playerCards.push(newCard);
+            }
+
+            var obj = {
+              playerCards: playerCards,
+              whiteCards: $scope.whiteCards
+            };
+            socket.emit('send-player-hands', obj);
+          }
+
           var ind = pickCardIndex($scope.blackCards.length)
           var card = $scope.blackCards.splice(ind, 1)[0];
           czarIndex = $scope.cardCzarIndex;
@@ -135,6 +183,7 @@ angular.module('ChatCtrls', ['Services'])
           }
           card.cardCzar = $scope.users[czarIndex].nickname;
           card.cardCzarIndex = czarIndex;
+
           socket.emit('send-black-card', card);
           socket.emit('new-round');
         }
@@ -193,9 +242,6 @@ angular.module('ChatCtrls', ['Services'])
               socket.emit('send-card', card);
               $scope.myCards.splice($scope.selectedAnswer, 1)
               $scope.selectedAnswer = null;
-              var newCard = shuffleArray($scope.whiteCards, 1)[0];
-              $scope.myCards.push(newCard);
-              $localStorage.cards = $scope.myCards;
           }
         }
 
@@ -242,15 +288,12 @@ angular.module('ChatCtrls', ['Services'])
           $scope.roundWinner = data.roundWinner;
           $scope.winnerSelected = data.winnerSelected;
           var index = findIndexOfWinner($scope.roundWinner)
-          console.log("index", index)
-          console.log($scope.users[index])
           $scope.users[index].score = (($scope.users[index].score || 0 ) + 1)
-          console.log($scope.users[index].score)
           if($scope.roundWinner === $scope.mynickname){
             $scope.myscore++;
+            $scope.localStorage = $scope.myscore;
           }
         });
-
 
         $scope.sendLike = function(user) {
             console.log(user);

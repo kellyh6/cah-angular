@@ -113,6 +113,10 @@ io.sockets.on('connection', function(socket){
     io.sockets.in(roomKey).emit('new-round-received');
   });
 
+  socket.on('send-player-hands', function(data){
+    io.sockets.in(roomKey).emit('player-hands-received', data);
+  });
+
 });
 
 

@@ -22,8 +22,7 @@ var blackCardsFirstExpansion = [
   { "question": "The CIA now interrogates enemy agents by repeatedly subjecting them to ______.", "blanks": 1, "pack": db.decks.findOne()._id },
   { "question": "The secret to a lasting marriage is communication, communication, and ______.", "blanks": 1, "pack": db.decks.findOne()._id },
   { "question": "The socialist governments of Scandinavia have declared that access to ______ is a basic human right.", "blanks": 1, "pack": db.decks.findOne()._id },
-  { "question": "This season on Man vs. Wild, Bear Grylls must survive in the depths of the", "blanks": 1, "pack": db.decks.findOne()._id },
-  { "question": "Amazon with only ______ and his wits.", "blanks": 1, "pack": db.decks.findOne()._id },
+  { "question": "This season on Man vs. Wild, Bear Grylls must survive in the depths of the Amazon with only ______ and his wits.", "blanks": 1, "pack": db.decks.findOne()._id },
   { "question": "What brought the orgy to a grinding halt?", "blanks": 1, "pack": db.decks.findOne()._id },
   { "question": "What has been making life difficult at the nudist colony?", "blanks": 1, "pack": db.decks.findOne()._id },
   { "question": "What’s the gift that keeps on giving?", "blanks": 1, "pack": db.decks.findOne()._id },
@@ -33,7 +32,7 @@ var blackCardsFirstExpansion = [
 
 db.blackcards.insert(blackCardsFirstExpansion)
 
-var whiteCardsFirstExpansion = [
+db.whitecards.insert( [
   { "answer": "Savagely beating a mascot", "pack" : db.decks.findOne()._id},
   { "answer": "Scrotum tickling.", "pack" : db.decks.findOne()._id},
   { "answer": "Sexual humiliation.", "pack" : db.decks.findOne()._id},
@@ -53,7 +52,11 @@ var whiteCardsFirstExpansion = [
   { "answer": "The gulags.", "pack" : db.decks.findOne()._id},
   { "answer": "The harsh light of day.", "pack" : db.decks.findOne()._id},
   { "answer": "The hiccups.", "pack" : db.decks.findOne()._id},
-  { "answer": "The ooze", "pack" : db.decks.findOne()._id},
+  { "answer": "The ooze", "pack" : db.decks.findOne()._id}
+])
+
+
+db.whitecards.insert( [  
   { "answer": "The shambling corpse of Larry King.", "pack" : db.decks.findOne()._id},
   { "answer": "This guy!", "pack" : db.decks.findOne()._id},
   { "answer": "Tripping balls.", "pack" : db.decks.findOne()._id},
@@ -87,35 +90,13 @@ var whiteCardsFirstExpansion = [
   { "answer": "Just the tip.", "pack" : db.decks.findOne()._id},
   { "answer": "Leveling up.", "pack" : db.decks.findOne()._id},
   { "answer": "Literally eating shit.", "pack" : db.decks.findOne()._id},
-  { "answer": "Mad hacky-sack skills.", "pack" : db.decks.findOne()._id},
   { "answer": "Making the penises kiss.", "pack" : db.decks.findOne()._id},
   { "answer": "Media coverage.", "pack" : db.decks.findOne()._id},
   { "answer": "Medieval Times® Dinner & Tournament.", "pack" : db.decks.findOne()._id},
   { "answer": "Mom.", "pack" : db.decks.findOne()._id},
   { "answer": "Moral ambiguity.", "pack" : db.decks.findOne()._id},
   { "answer": "My machete.", "pack" : db.decks.findOne()._id}
-]
-
-db.whitecards.insert(whiteCardsFirstExpansion)
-
-db.whitecards.insert( [ { "answer": "Good grammar.", "pack" : db.decks.findOne()._id},
-{ "answer": "having a penis", "pack" : db.decks.findOne()._id},
-{ "answer": "Hipsters.", "pack" : db.decks.findOne()._id},
-{ "answer": "Historical revisionism.", "pack" : db.decks.findOne()._id},
-{ "answer": "Insatiable bloodlust.", "pack" : db.decks.findOne()._id},
-{ "answer": "Jafar.", "pack" : db.decks.findOne()._id},
-{ "answer": "Jean-Claude Van Damme in slow motion.", "pack" : db.decks.findOne()._id},
-{ "answer": "Jean-Claude Van Damme.", "pack" : db.decks.findOne()._id},
-{ "answer": "Just the tip.", "pack" : db.decks.findOne()._id},
-{ "answer": "Leveling up.", "pack" : db.decks.findOne()._id},
-{ "answer": "Literally eating shit.", "pack" : db.decks.findOne()._id},
-{ "answer": "Mad hacky-sack skills.", "pack" : db.decks.findOne()._id},
-{ "answer": "Making the penises kiss.", "pack" : db.decks.findOne()._id},
-{ "answer": "Media coverage.", "pack" : db.decks.findOne()._id},
-{ "answer": "Medieval Times® Dinner & Tournament.", "pack" : db.decks.findOne()._id},
-{ "answer": "Mom.", "pack" : db.decks.findOne()._id},
-{ "answer": "Moral ambiguity.", "pack" : db.decks.findOne()._id},
-{ "answer": "My machete.", "pack" : db.decks.findOne()._id} ])
+])
 
 db.whitecards.insert( [ { "answer": "Carnies.", "pack" : db.decks.findOne()._id},
 { "answer": "Clams.", "pack" : db.decks.findOne()._id},
