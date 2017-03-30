@@ -3,8 +3,8 @@
     <div class="jumbotron">
       <h3 class="text-center" ng-model="round" ng-show="round !== -1">Round {{round}}</h3>
       <h4 class="text-center" ng-show="cardCzar !== 0 && !czarPicking && !roundWinner">{{cardCzar}} is the Card Czar</h4>
-      <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !roundWinner">{{cardCzar}} is picking an answer...</h4>
-      <h4 class="text-center" ng-show="cardCzar !== 0 && roundWinner">{{roundWinner}} got +1 awesome point!</h4>
+      <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !winnerSelected">{{cardCzar}} is picking an answer...</h4>
+      <h4 class="text-center" ng-show="cardCzar !== 0 && winnerSelected">{{roundWinner}} got +1 awesome point!</h4>
       <div class="row">
         <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
         <div class='col-xs-3'>
@@ -16,8 +16,9 @@
       </div>
       <div class="row">
         <div class='col-xs-3' ng-repeat="a in submittedAnswers track by $index">
-          <div class='answer-card' ng-class="{selected: $index === roundWinnerIndex}" ng-click="!czarPicking || chooseWinningcard($index)">
+          <div class='answer-card' ng-class="{selected: submittedAnswers[$index].nickname === roundWinner}" ng-click="!czarPicking || chooseWinningcard($index)">
             <h4 class="card-title" ng-show="czarPicking">{{a.answer}}</h4>
+            <h4 ng-show="czarPicking && blanks > 1" class="text-center">{{a.order}}</h4>
             <h6>Cards Against Assembly</h6>
           </div>
         </div>
@@ -31,15 +32,16 @@
           <h4 ng-model="myscore">Score: {{myscore}}</h4>
         </div>
         <div class="col-xs-6">
-          <h4 class="text-danger text-right" ng-show="cardCzar === mynickname"><strong>You</strong> are Card CZAR</h4>
+          <h4 class="text-right" ng-show="cardCzar === mynickname"><strong>You</strong> are Card CZAR</h4>
         </div>
       </div>
       <div class="row">
         <div class='col-xs-3' ng-repeat="card in myCards track by $index">
           <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
-            <h4 class="card-title">{{card.answer}}</h4>
+            <h4 class="card-title">{{card.answer}} </h4>
+            <h4 ng-show="$index === selectedAnswer && blanks > 1" class="text-center">{{userCardsPicked+1}}</h4>
             <h6>Cards Against Assembly</h6>
-            
+
           </div>
         </div>
       </div>
