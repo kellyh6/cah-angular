@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var PORT = process.env.PORT || 3000;
+const Url = require('url');
 
 
 //JSON web token
@@ -16,6 +17,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
 
+
 //mongoose models and connection
 var mongoose = require('mongoose');
 var User = require('./models/user');
@@ -24,6 +26,7 @@ var BlackCard = require('./models/blackCard');
 var Deck = require('./models/deck');
 
 var users = [];
+// var u = Url.parse(url)
 
 mongoose.connect('mongodb://localhost/cardsagainsthumanity');
 
@@ -46,39 +49,48 @@ app.use(function (err, req, res, next) {
   }
 });
 
-//io stuff
-io.on('connection', function(socket){
-  console.log('a user connected');
 
-  socket.on('get-users', function() {
-    socket.emit('all-users', users);
+//io stuff
+io.sockets.on('connection', function(socket){
+    var roomKey = socket.handshake.headers.referer;
+    socket.join(roomKey)
+    console.log('a user connected to,', roomKey);
+    socket.on('get-users', function() {
+      var match = users.filter(function(value){
+        return value.room === roomKey;
+      })
+      io.sockets.in(roomKey).emit('all-users', match);
   });
 
   //new user
   socket.on('join', function(data){
       //User name
-      socket.nickname = data.nickname;
-      users[socket.nickname] = socket; 
-      var userObj = {
+    socket.nickname = data.nickname;
+    users[socket.nickname] = socket; 
+    var userObj = {
         nickname: data.nickname,
-        socketid: socket.id
-    };
-
+        socketid: socket.id,
+        room: roomKey
+      };
     users.push(userObj);
-    io.emit('all-users', users);
+    var match = users.filter(function(value){
+      return value.room === roomKey;
+    })
+    io.sockets.in(roomKey).emit('all-users', match);
   });
 
   socket.on('send-message', function(data) {
-      //socket.broadcast.emit('message-received', data);
-      io.emit('message-received', data);
+      io.sockets.in(roomKey).emit('message-received', data);
   });
 
   socket.on('send-answers', function(data){
-    io.emit('answers-received', data);
+    // io.emit('answers-received', data);
+    io.sockets.in(roomKey).emit('answers-received', data);
   })
 
   socket.on('send-black-card', function(data){
-    io.emit('black-card-received', data);
+    // io.emit('black-card-received', data);
+    io.sockets.in(roomKey).emit('black-card-received', data);
   });
 
   socket.on('disconnect', function(){
@@ -86,15 +98,18 @@ io.on('connection', function(socket){
   });
 
   socket.on('send-card', function(data){
-    io.emit('card-received', data);
+    // io.emit('card-received', data);
+    io.sockets.in(roomKey).emit('card-received', data);
   });
 
   socket.on('send-winner', function(data){
-    io.emit('winner-received', data);
+    // io.emit('winner-received', data);
+    io.sockets.in(roomKey).emit('winner-received', data);
   });
 
   socket.on('new-round', function(){
-    io.emit('new-round-received');
+    // io.emit('new-round-received');
+    io.sockets.in(roomKey).emit('new-round-received', data);
   });
 
 });
