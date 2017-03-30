@@ -142,3 +142,10 @@ footer .heart {
 .jumbotron {
   padding-top: 10px;
 }
+
+.gandalf img{
+  position: absolute;
+  height: 200px;
+  top: 20vh;
+  left: 40vh;
+}

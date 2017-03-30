@@ -86,6 +86,7 @@ angular.module('ChatCtrls', ['Services'])
         $scope.blackCard = {};
         $scope.myCards = [];
         $scope.cardCzar = 0;
+        $scope.gandalf = false;
         $scope.cardCzarIndex = null;
         $scope.round = -1;
         // ROOMS ------ ADDED ROOM -> WORKING
@@ -173,6 +174,7 @@ angular.module('ChatCtrls', ['Services'])
             socket.emit('send-player-hands', obj);
           }
 
+
           var ind = pickCardIndex($scope.blackCards.length)
           var card = $scope.blackCards.splice(ind, 1)[0];
           czarIndex = $scope.cardCzarIndex;
@@ -183,18 +185,21 @@ angular.module('ChatCtrls', ['Services'])
           }
           card.cardCzar = $scope.users[czarIndex].nickname;
           card.cardCzarIndex = czarIndex;
+          card.blackCards = $scope.blackCards;
 
           socket.emit('send-black-card', card);
           socket.emit('new-round');
         }
 
         socket.on('black-card-received', function(data){
+          $scope.blackCards = data.blackCards;
           $scope.blackCard = data;
           $scope.userCardsPicked = 0;
           $scope.blanks = data.blanks;
           $scope.czarPicking = false;
           $scope.cardCzar = data.cardCzar;
           $scope.cardCzarIndex = data.cardCzarIndex;
+          console.log("Suck it trebeck", $scope.blackCards.length)
         });
 
         socket.on('new-round-received', function(){
