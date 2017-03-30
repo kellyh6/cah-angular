@@ -39,7 +39,7 @@ angular.module('ChatCtrls', ['Services'])
 
 
   $scope.startGame = function(){
-    $location.path("/main2/" + $stateParams.roomId);
+    $location.path("/main/" + $stateParams.roomId);
     // $state.go("main2" + $stateParams.roomId);
   }
 
@@ -71,7 +71,6 @@ angular.module('ChatCtrls', ['Services'])
         $scope.round = -1;
         // ROOMS ------ ADDED ROOM -> WORKING
         $scope.room = $stateParams.roomId
-        $scope.rooms = ["123"];
         // ****
         $scope.myscore = $localStorage.score;
         $scope.mynickname = $localStorage.nickname;
@@ -82,7 +81,6 @@ angular.module('ChatCtrls', ['Services'])
             console.log("a user connected to " + $scope.room)
         })
         
-
         socket.on('all-users', function(data) {
             $scope.users = data;
         });

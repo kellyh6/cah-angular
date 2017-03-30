@@ -13,11 +13,6 @@ app.config([
       templateUrl: 'app/views/home.html',
       controller: 'JoinCtrl'
     })
-    .state('main', {
-    url:"/main",
-    templateUrl: "app/views/main.html",
-    controller: "CardsCtrl"
-  })
     .state('signup', {
       url:'/signup',
       templateUrl: 'app/views/userSignup.html',
@@ -37,8 +32,8 @@ app.config([
       templateUrl: 'app/views/chat.html',
       controller: 'JoinCtrl'
     })
-    .state('main2', {
-      url:'/main2/:roomId',
+    .state('main', {
+      url:'/main/:roomId',
       templateUrl: 'app/views/main2.html',
       controller: 'MainCtrl'
     })
