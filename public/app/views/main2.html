@@ -6,7 +6,7 @@
       <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !winnerSelected">{{cardCzar}} is picking an answer...</h4>
       <h4 class="text-center" ng-show="cardCzar !== 0 && winnerSelected">{{roundWinner}} got +1 awesome point!</h4>
       <div class="row">
-        <button class="btn btn-primary" ng-show="cardCzar === 0 || roundWinner && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
+        <button class="btn btn-primary" ng-show="cardCzar === 0 || winnerSelected && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
         <div class='col-xs-3'>
           <div class='card'>
             <h4 class="card-title">{{blackCard.question}}</h4>
@@ -22,7 +22,7 @@
             <h6>Cards Against Assembly</h6>
           </div>
         </div>
-        <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname" ng-click="selectWinningAnswer()">Select Winner</button>
+        <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname && !winnerSelected" ng-click="selectWinningAnswer()">Select Winner</button>
       </div>
     </div>
     <div class="jumbotron">
