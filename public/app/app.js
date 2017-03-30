@@ -9,8 +9,13 @@ app.config([
 
     $stateProvider
     .state('home', {
-      url: '/:roomId',
+      url: '/',
       templateUrl: 'app/views/home.html',
+      controller: 'JoinCtrl'
+    })
+    .state('join', {
+      url: '/:roomId',
+      templateUrl: 'app/views/join.html',
       controller: 'JoinCtrl'
     })
     .state('signup', {
@@ -26,11 +31,6 @@ app.config([
     .state('404', {
       url: '/404',
       templateUrl: 'app/views/404.html'
-    })
-    .state('chat', {
-      url:'/chat',
-      templateUrl: 'app/views/chat.html',
-      controller: 'JoinCtrl'
     })
     .state('main', {
       url:'/main/:roomId',
