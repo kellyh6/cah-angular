@@ -4,9 +4,23 @@ angular.module('ChatCtrls', ['Services'])
   $scope.playerList = [];
   $scope.mynickname = '';
   var nickname;
+  $scope.privateRoom = window.location.href;
+
+  $scope.randomString = function() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for(var i = 0; i < 15; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
+  $scope.createRoom = function() {
+    var roomId = $scope.randomString();
+    $location.path("/" + $scope.randomString());
+  }
 
   socket.emit('get-users');
-  
   socket.on('all-users', function(data){
     $scope.playerList = data;
   });
@@ -25,11 +39,11 @@ angular.module('ChatCtrls', ['Services'])
       nickname = $scope.playerInput;
       $localStorage.nickname = nickname;
       $scope.mynickname = $localStorage.nickname;
-      $localStorage.score = 0;
-
       socket.emit('join', {
         nickname: nickname,
-        rooms: $stateParams.roomId
+        socketid: socket.id,
+        room: $stateParams.roomId,
+        host: false
       });
       $scope.playerInput = "";
     } else {
@@ -37,16 +51,10 @@ angular.module('ChatCtrls', ['Services'])
     }
   }
 
-
   $scope.startGame = function(){
     $location.path("/main/" + $stateParams.roomId);
     // $state.go("main2" + $stateParams.roomId);
   }
-
-  $scope.assignAnswers = function() {
-    // sharedProperties.setNumPlayers($scope.playerList.length);
-    // sharedProperties.setPlayerList($scope.playerList);
-  };
 
 }])
 .controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams){
@@ -95,7 +103,7 @@ angular.module('ChatCtrls', ['Services'])
         WhiteCardAPI.getCards().then(function success(response){
             $scope.whiteCards = response;
             if (!$localStorage.cards) {
-                $localStorage.cards = shuffleArray($scope.whiteCards, 2);
+                $localStorage.cards = shuffleArray($scope.whiteCards, 10);
                 $scope.myCards = $localStorage.cards;
             } else {
                 $scope.myCards = $localStorage.cards;
@@ -163,7 +171,6 @@ angular.module('ChatCtrls', ['Services'])
             console.log(data);
             $scope.likes.push(data.from);
         });
-
 
         $scope.sendMessage = function(data) {
           if($scope.message != "" && $scope.message){
