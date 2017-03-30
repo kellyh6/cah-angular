@@ -80,6 +80,7 @@ angular.module('ChatCtrls', ['Services'])
           socket.on('connection', function(socket){
             console.log("a user connected to " + $scope.room)
         })
+        
 
         socket.on('all-users', function(data) {
             $scope.users = data;

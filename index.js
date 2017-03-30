@@ -50,9 +50,10 @@ app.use(function (err, req, res, next) {
 });
 
 
+
 //io stuff
 io.sockets.on('connection', function(socket){
-    var roomKey = socket.handshake.headers.referer;
+    var roomKey = socket.handshake.headers.referer.split(":3000/")[1];
     socket.join(roomKey)
     console.log('a user connected to,', roomKey);
     socket.on('get-users', function() {
@@ -109,7 +110,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('new-round', function(){
     // io.emit('new-round-received');
-    io.sockets.in(roomKey).emit('new-round-received', data);
+    io.sockets.in(roomKey).emit('new-round-received');
   });
 
 });
