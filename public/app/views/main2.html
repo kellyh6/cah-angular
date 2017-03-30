@@ -46,47 +46,38 @@
    <button ng-click="submitAnswer()" ng-show="canSubmit()" class="btn btn-primary">Submit!</button>
 </div>
 
-  <div class="col-xs-2 chat">
-    <div class="row">
-      <div class="col-xs-6">
-        <p class="marker"><strong>Players</strong></p>
-        <p ng-repeat="user in users track by $index"><i class='fa fa-user'></i> {{user.nickname}} <span ng-show="user.nickname === mynickname"> (you)</span></p>
-      </div>
-      <div class="col-xs-6">
-        <p class="marker"><strong>Score</strong></p>        
-        <p ng-repeat='u in users track by $index'>        
-          <span ng-show="!u.score">0 </span>{{u.score}}<span> Points</span>
-         </p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-12">
-        <form ng-submit='sendMessage()'>
-          <div class='input-group'>
-            <input class='input-sm form-control'
-                        ng-model='message'
-                        type='text'
-                        placeholder="Type a message...">
-            <span class='input-group-btn'>
-              <input class='input-sm btn btn-default'
-              type='submit'
-              value='Send'>
-            </span>
-          </div>
-        </form>
-        <br>
-        <div class='well chatbox' id='chat_history'>
-          <ul class='list-unstyled'>
-            <li ng-repeat='m in messages'>
-              <b>{{m.from}}<span ng-show="m.from === mynickname"> (you)</span></b>:
-              &nbsp;
-              {{m.message}}
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-  </div>
 </div>
+  <div class="chat col-xs-2">
+    <p class="marker"><strong>Players</strong></p>
+    <p ng-repeat="user in users track by $index">
+      <i class='fa fa-user'></i> {{user.nickname}} <span ng-show="user.nickname === mynickname"> (you)</span>
+      <i class='fa fa-glass'></i>
+      <span ng-show="!user.score">0 </span>{{user.score}}<span> appletinis</span>
+    </p>
+
+    <div class="col-xs-12">
+      <form ng-submit='sendMessage()'>
+        <div class='input-group'>
+          <input class='input-sm form-control'
+                      ng-model='message'
+                      type='text'
+                      placeholder="Type a message...">
+          <span class='input-group-btn'>
+            <input class='input-sm btn btn-default'
+            type='submit'
+            value='Send'>
+          </span>
+        </div>
+      </form>
+      <br>
+      <div class='well chatbox' id='chat_history'>
+        <ul class='list-unstyled'>
+          <li ng-repeat='m in messages'>
+            <b>{{m.from}} </b>:
+            &nbsp;
+            {{m.message}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>

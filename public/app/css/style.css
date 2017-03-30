@@ -16,6 +16,11 @@ body {
   height: 100vh;
 }
 
+.chat .col-xs-12 {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
 .chatbox {
   color: black;
   overflow: scroll;
@@ -25,7 +30,6 @@ body {
 .jumbotron {
   background-color: rgba(0,0,0,0);
 }
-
 
 .white {
   color:white;
@@ -122,6 +126,7 @@ h1 {
 
 .selected {
   border: 1px red solid;
+  color: red;
 }
 
 footer {
