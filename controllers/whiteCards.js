@@ -10,8 +10,13 @@ router.get('/', function(req, res){
   });
 });
 
-router.get('/:deckId', function(req, res){
-  WhiteCard.find({pack : req.params.deckId}, function(err, cards) {
+router.get('/:deckIds', function(req, res){
+  var idArray = req.params.deckIds.split(",");
+  console.log(idArray);
+
+  WhiteCard.find({
+    pack: { $in: idArray }
+  }, function (err, cards){
     if (err) return res.status(500).send(err);
     return res.send(cards);
   });

@@ -67,15 +67,14 @@ angular.module('Services', [])
 .factory('BlackCardAPI', ['$http', function($http){
   var blackCards = [];
   return {
-    getCardsFromDeck: function(deckId){
-      return $http.get("api/blackCards/" + deckId)
+    getCardsFromManyDecks: function(array){
+      return $http.get("api/blackCards/" + array)
       .then(function success(response){
-        console.log(response);
         return response.data;
       }, function error(err){
-        console.log("error", err);
+        console.log(err);
         return null;
-      });
+      })
     },
     getCards: function(){
       return $http.get("api/blackCards")
@@ -143,15 +142,14 @@ angular.module('Services', [])
 .factory('WhiteCardAPI', ['$http', function($http){
   var whiteCards = [];
   return {
-    getCardsFromDeck: function(deckId){
-      return $http.get("api/whiteCards/" + deckId)
+    getCardsFromManyDecks: function(array){
+      return $http.get("api/whiteCards/" + array)
       .then(function success(response){
-        console.log(response);
         return response.data;
       }, function error(err){
-        console.log("error", err);
+        console.log(err);
         return null;
-      });
+      })
     },
     getCards: function(){
       return $http.get("api/whiteCards")
