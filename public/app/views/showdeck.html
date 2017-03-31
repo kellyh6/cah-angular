@@ -1,7 +1,16 @@
 <h1 class="text-center">Card Database</h1>
 
 <div class="text-center">
+
+
+  <input type="checkbox" name="vehicle" value="Bike">I have a bike<br>
+  <input type="checkbox" name="vehicle" value="Car">I have a car
+
+
+
+
   <select ng-model="deckId">
+    <option disabled selected value> -- All cards -- </option>
     <option ng-repeat="d in decks track by $index" value="{{d._id}}">{{d.name}}</option>
   </select>
   <button class="btn btn-primary" ng-click="getCards()">Show me the cards!</button>
