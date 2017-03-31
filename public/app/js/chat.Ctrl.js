@@ -63,11 +63,10 @@ angular.module('ChatCtrls', ['Services'])
 
   $scope.startGame = function(){
     $location.path("/main/" + $stateParams.roomId);
-    // $state.go("main2" + $stateParams.roomId);
   }
 
 }])
-.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams){
+.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', '$location', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams, $location){
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
@@ -139,6 +138,11 @@ angular.module('ChatCtrls', ['Services'])
 
 
         $scope.drawBlackCard = function(){
+          if($scope.users.length < 3) {
+            console.log("hi")
+            $location.path("/");
+            return;
+          }
           if($scope.cardCzar === 0){
             WhiteCardAPI.getCards().then(function success(response){
                 var whiteCards = response;
@@ -239,14 +243,19 @@ angular.module('ChatCtrls', ['Services'])
         };
 
         $scope.submitAnswer = function() {
-            if(!$scope.selectedAnswer.isNaN) {
-              $scope.userCardsPicked = $scope.userCardsPicked + 1;
-              var card = $scope.myCards[$scope.selectedAnswer];
-              card.order = $scope.userCardsPicked;
-              card.nickname = $scope.mynickname;
-              socket.emit('send-card', card);
-              $scope.myCards.splice($scope.selectedAnswer, 1)
-              $scope.selectedAnswer = null;
+          if($scope.users.length < 3) {
+            console.log("hi")
+            $location.path("/");
+            return;
+          }
+          if(!$scope.selectedAnswer.isNaN) {
+            $scope.userCardsPicked = $scope.userCardsPicked + 1;
+            var card = $scope.myCards[$scope.selectedAnswer];
+            card.order = $scope.userCardsPicked;
+            card.nickname = $scope.mynickname;
+            socket.emit('send-card', card);
+            $scope.myCards.splice($scope.selectedAnswer, 1)
+            $scope.selectedAnswer = null;
           }
         }
 
