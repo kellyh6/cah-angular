@@ -75,12 +75,12 @@ angular.module('ChatCtrls', ['Services'])
         deckIds.push(d._id);
       }
     });
-    if(deckIds.length === 0){
-      $scope.errorMessage = "Games doth need many a card to be enjoyed, or not to be.";
-    } else {
+    // if(deckIds.length === 0){
+    //   $scope.errorMessage = "Games doth need many a card to be enjoyed, or not to be.";
+    // } else {
       sharedProperties.setDeckIds(deckIds);
       $location.path("/main/" + $stateParams.roomId);
-    }
+    // }
   }
 
 }])
