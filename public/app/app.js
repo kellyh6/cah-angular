@@ -1,4 +1,4 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls', 'BuildCtrls', 'DeckCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls', 'BuildCtrls', 'DeckCtrls', 'luegg.directives']);
 
 app.config([
   '$stateProvider',

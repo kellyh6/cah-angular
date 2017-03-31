@@ -6,12 +6,15 @@
       <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !winnerSelected">{{cardCzar}} is picking an answer...</h4>
       <h4 class="text-center" ng-show="cardCzar !== 0 && winnerSelected">{{roundWinner}} got +1 appletini!</h4>
       <div class="row">
-        <button class="btn btn-primary" ng-show="cardCzar === 0 || winnerSelected && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
         <div class='col-xs-3'>
           <div class='card'>
             <h4 class="card-title">{{blackCard.question}}</h4>
             <h6>Cards Against Humanity</h6>
           </div>
+        </div>
+        <div class="card card-back col-xs-3" ng-show="cardCzar === 0 || winnerSelected && cardCzar === mynickname" ng-click="drawBlackCard()">
+          <h4 class="card-title">Cards <br> Against <br> Humanity</h4>
+          <h3>Draw Card</h3>
         </div>
       </div>
       <div class="row">
@@ -72,7 +75,7 @@
         </div>
       </form>
       <br>
-      <div class='well chatbox' id='chat_history'>
+      <div class='well chatbox' scroll-glue id='chat_history'>
         <ul class='list-unstyled'>
           <li ng-repeat='m in messages'>
             <b>{{m.from}} </b>:

@@ -88,15 +88,24 @@ h1 {
   width: 100%;
 }
 
-.card-back h4:after {
-  content: "Cards Against Humanity";
-  width: inherit;
-  font-size: 1.5em;
+.card-back h4{
+  font-size: 2em;
   line-height: 1.2em;
 }
 
+.card-back h3 {
+  margin-top: 30px;
+  text-align: center;
+  display: none;
+}
+
+.card-back:hover h3{
+  display: inline;
+}
+
 .card,
-.answer-card {
+.answer-card,
+.card-back {
   border: 1px solid black;
   border-radius: 15px;
   padding: 1rem;
@@ -120,6 +129,11 @@ h1 {
   margin-left: 1px;
 }
 
+.card-back {
+  text-align: left;
+  vertical-align: top;
+}
+
 .row {
   margin: 0;
 }
@@ -141,11 +155,4 @@ footer .heart {
 
 .jumbotron {
   padding-top: 10px;
-}
-
-.gandalf img{
-  position: absolute;
-  height: 200px;
-  top: 20vh;
-  left: 40vh;
 }
