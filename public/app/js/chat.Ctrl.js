@@ -1,11 +1,18 @@
 angular.module('ChatCtrls', ['Services'])
-.controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state', '$stateParams',  function($location, $scope, $localStorage, socket, $state, $stateParams){
+.controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state', '$stateParams', 'DeckAPI', 'sharedProperties',  function($location, $scope, $localStorage, socket, $state, $stateParams, DeckAPI, sharedProperties){
   $scope.playerInput = '';
   $scope.playerList = [];
   $scope.nicknames = [];
   $scope.mynickname = '';
+  $scope.decks = [];
   var nickname;
   $scope.privateRoom = window.location.href;
+
+  DeckAPI.getDecks().then(function success(response){
+    $scope.decks = response;
+  }, function error(err){
+    console.log(err);
+  });
 
   $scope.randomString = function() {
     var text = "";
@@ -62,11 +69,22 @@ angular.module('ChatCtrls', ['Services'])
   }
 
   $scope.startGame = function(){
-    $location.path("/main/" + $stateParams.roomId);
+    var deckIds = [];
+    $scope.decks.forEach(function(d) {
+        if (d.selected) {
+        deckIds.push(d._id);
+      }
+    });
+    if(deckIds.length === 0){
+      $scope.errorMessage = "Games doth need many a card to be enjoyed, or not to be.";
+    } else {
+      sharedProperties.setDeckIds(deckIds);
+      $location.path("/main/" + $stateParams.roomId);
+    }
   }
 
 }])
-.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', '$location', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams, $location){
+.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', '$location', 'sharedProperties', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams, $location, sharedProperties){
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
@@ -88,6 +106,7 @@ angular.module('ChatCtrls', ['Services'])
         $scope.gandalf = false;
         $scope.cardCzarIndex = null;
         $scope.round = -1;
+        $scope.deckIds = sharedProperties.getDeckIds();
         // ROOMS ------ ADDED ROOM -> WORKING
         $scope.room = $stateParams.roomId
         // ****
@@ -109,8 +128,7 @@ angular.module('ChatCtrls', ['Services'])
             });
         });
 
-
-        BlackCardAPI.getCards().then(function success(response){
+        BlackCardAPI.getCardsFromManyDecks($scope.deckIds).then(function success(response){
           $scope.blackCards = response;
         }, function error(err){
           console.log(err);
@@ -144,7 +162,7 @@ angular.module('ChatCtrls', ['Services'])
             return;
           }
           if($scope.cardCzar === 0){
-            WhiteCardAPI.getCards().then(function success(response){
+            WhiteCardAPI.getCardsFromManyDecks($scope.deckIds).then(function success(response){
                 var whiteCards = response;
                 var playerCards = [];
                 for(var i = 0; i < $scope.users.length;i++){

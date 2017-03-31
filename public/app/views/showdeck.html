@@ -2,12 +2,6 @@
 
 <div class="text-center">
 
-  <label ng-repeat="d in decks track by $index">{{d.name}}
-      <input ng-model="d.selected" type="checkbox" value="{{d._id}}">
-  </label><br/>
-  <button class="btn btn-danger" ng-click="getCardsFromManyDecks()">Get Cards!</button>
-  <br><br>
-
   <select ng-model="deckId">
     <option disabled selected value> -- All cards -- </option>
     <option ng-repeat="d in decks track by $index" value="{{d._id}}">{{d.name}}</option>

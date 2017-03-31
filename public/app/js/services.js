@@ -225,6 +225,7 @@ angular.module('Services', [])
 .service("sharedProperties", function(){
   var numPlayers = 3;
   var playerList = ["player 1", "player 2", "player 3"];
+  var deckIds = [];
 
   return {
     getNumPlayers: function() {
@@ -238,6 +239,12 @@ angular.module('Services', [])
     },
     setPlayerList: function(value){
       playerList = value;
+    },
+    getDeckIds: function() {
+      return deckIds;
+    },
+    setDeckIds: function(value){
+      deckIds = value;
     }
   };
 })
