@@ -160,3 +160,7 @@ footer .heart {
   height: 300px;
   width: 400px;
 }
+
+.form-group {
+  text-align: center;
+}
