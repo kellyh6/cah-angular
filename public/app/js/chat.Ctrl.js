@@ -82,10 +82,15 @@ angular.module('ChatCtrls', ['Services'])
         deckIds.push(d._id);
       }
     });
+    console.log(deckIds);
+    if(deckIds.length !== 0){
       sharedProperties.setDeckIds(deckIds);
       socket.emit('send-bitches', {
         sendDothBitchesElsewhere: true
       });
+    } else {
+      $scope.errorMessage = "Thee wilt select at least one deck doth the game best beenst kench'd";
+    }
   }
 
   socket.on('bitches-received', function(data){
