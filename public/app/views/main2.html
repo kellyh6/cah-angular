@@ -10,7 +10,7 @@
         <div class='col-xs-3'>
           <div class='card'>
             <h4 class="card-title">{{blackCard.question}}</h4>
-            <h6>Cards Against Assembly</h6>
+            <h6>Cards Against Humanity</h6>
           </div>
         </div>
       </div>
@@ -19,7 +19,7 @@
           <div class='answer-card' ng-class="{selected: submittedAnswers[$index].nickname === roundWinner}" ng-click="!czarPicking || chooseWinningcard($index)">
             <h4 class="card-title" ng-show="czarPicking">{{a.answer}}</h4>
             <h4 ng-show="czarPicking && blanks > 1" class="text-center">{{a.order}}</h4>
-            <h6>Cards Against Assembly</h6>
+            <h6>Cards Against Humanity</h6>
           </div>
         </div>
         <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname && !winnerSelected" ng-click="selectWinningAnswer()">Select Winner</button>
@@ -40,7 +40,7 @@
           <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
             <h4 class="card-title">{{card.answer}} </h4>
             <h4 ng-show="$index === selectedAnswer && blanks > 1" class="text-center">{{userCardsPicked+1}}</h4>
-            <h6>Cards Against Assembly</h6>
+            <h6>Cards Against Humanity</h6>
 
           </div>
         </div>
