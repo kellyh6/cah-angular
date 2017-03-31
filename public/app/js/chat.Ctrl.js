@@ -222,7 +222,7 @@ angular.module('ChatCtrls', ['Services'])
         }
 
         socket.on('message-received', function(data) {
-          $scope.messages.unshift(data);
+          $scope.messages.push(data);
         });
 
         socket.on('user-liked', function(data) {
