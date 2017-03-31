@@ -1,9 +1,10 @@
 angular.module('DeckCtrls', ['Services'])
-.controller('DeckCtrl', ['$scope', 'BlackCardAPI', 'DeckAPI', 'WhiteCardAPI', function($scope, BlackCardAPI, DeckAPI, WhiteCardAPI){
+.controller('DeckCtrl', ['$scope', 'BlackCardAPI', 'DeckAPI', 'WhiteCardAPI', 'Auth', function($scope, BlackCardAPI, DeckAPI, WhiteCardAPI, Auth){
   $scope.decks = [];
   $scope.deckId = '';
   $scope.blackCards = [];
   $scope.whiteCards = [];
+  $scope.myCards = {};
 
   DeckAPI.getDecks().then(function success(response){
     $scope.decks = response;
@@ -43,6 +44,19 @@ angular.module('DeckCtrls', ['Services'])
     });
   }
 
+  if (Auth.isLoggedIn()){
+    WhiteCardAPI.getMyCards().then(function success(res){
+      $scope.myCards.whiteCards = res;
+    }, function error(err){
+      console.log("Error in myCards", err)
+    })
+    BlackCardAPI.getMyCards().then(function success(res){
+      $scope.myCards.blackCards = res;
+    }, function error(err){
+      console.log("Error in myCards", err)
+    })
+  }
+  
   $scope.getCards = function(){
     $scope.blackCards = [];
     $scope.whiteCards = [];

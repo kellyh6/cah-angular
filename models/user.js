@@ -15,12 +15,7 @@ var UserSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  decks: [
-    {
-      type: mongoose.Schema.Types.ObjectId, ref: 'Deck'
-    }
-  ]
+  }
 });
 
 UserSchema.set('toJSON', {

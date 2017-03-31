@@ -15,6 +15,7 @@ angular.module('AuthCtrls', ['Services'])
 }])
 .controller('SignupCtrl', ['$scope', '$http', '$location', function($scope, $http, $location){
   $scope.user = {
+    username: '',
     email: '',
     password: ''
   };
