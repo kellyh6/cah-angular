@@ -8,25 +8,25 @@
 				<form>
 					<input type="text" ng-model="addBlackCard" placeholder="Enter Question">
 					<button ng-click="update(addBlackCard,radiobtn); togglefrontBlack(); togglebackBlack()" class="btn btn-success"> Preview</button>
-					<button ng-click="createcustomBlack()" class="btn btn-success">Submit</button>
+					<button ng-click="createcustomBlack()" class="btn btn-success" ng-show='customBlack.question; customBlack.blanks'>Submit</button>
 
 				</form>
 				<br>
 					<section class="newBlackCard">
 							<div ng-show="frontBlack">
 								<p> {{togglefrontBlack}}</p>
-								<p>Cards Against Humanity</p>
+								<h6>Cards Against Humanity</h6>
 							</div>
 							<div ng-show="backBlack">
 								<p>{{addBlackCard}}</p>
 								<p> {{togglebackBlack}}</p>
 							</div>
 					</section>
-					<strong>Blank spaces needed to answer question:</strong>
+					<strong style="color: white;">Blank spaces needed to answer question:</strong>
 					<br>
 				<section class="radio">
 					<label class="Radio-inline">
-  						<input type="radio" id="inlineRadio1" value="1" ng-model="radiobtn" ng-click='update(radiobtn)'> 1 </label>
+  						<input type="radio" id="inlineRadio1" value="1" ng-model="radiobtn"> 1 </label>
 					<label class="Radio-inline">
   						<input type="radio" id="inlineRadio2" value="2" ng-model="radiobtn"> 2 </label>
 					<label class="Radio-inline">
@@ -42,19 +42,38 @@
 				<form>
 					<input type="text" ng-model="addWhiteCard" placeholder="Enter Answer">
 					<button ng-click="create(addWhiteCard); togglefrontWhite(); togglebackWhite()" class="btn btn-success">Preview</button>
-					<button ng-click="createcustomWhite()" class="btn btn-success">Submit</button>
+					<button ng-click="createcustomWhite()" class="btn btn-success" ng-show='customWhite.answer'>Submit</button>
 				</form>
 				<br>
-					<section class="newWhiteCard">
-						<div ng-show="frontWhite">
+					<div class="newWhiteCard">
+						<div ng-show="frontWhite" class="card-back">
 							<p>{{togglefrontWhite}}</p>
-							<p>Cards Against Humanity</p>
+							<h6>Cards Against Humanity</h6>
 						</div>
 						<div ng-show="backWhite">
-							<p>{{addWhiteCard}}</p>
+							<h4>{{addWhiteCard}}</h4>
 							<p>{{togglebackWhite}}</p>
 						</div>
-					</section>
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		 </div>
 	</div>
 </div>

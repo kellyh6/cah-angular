@@ -52,5 +52,22 @@ angular.module('BuildCtrls', [])
   	$scope.createcustomWhite = function() {	
   		console.log($scope.customWhite);
   		};
+    
 	});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
