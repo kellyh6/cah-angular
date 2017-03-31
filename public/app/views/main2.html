@@ -12,8 +12,8 @@
             <h6>Cards Against Humanity</h6>
           </div>
         </div>
-        <div class="card card-back col-xs-3" ng-show="cardCzar === 0 || winnerSelected && cardCzar === mynickname" ng-click="drawBlackCard()">
-          <h4 class="card-title">Cards <br> Against <br> Humanity</h4>
+        <div class="card card-back col-xs-3" ng-show="(mynickname === nicknames[0] && cardCzar === 0 ) || (winnerSelected && cardCzar === mynickname)" ng-click="drawBlackCard()">
+          <h4>Cards <br> Against <br> Humanity</h4>
           <h3>Draw Card</h3>
         </div>
       </div>
