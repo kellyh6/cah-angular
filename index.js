@@ -81,8 +81,9 @@ io.sockets.on('connection', function(socket){
   });
 
   socket.on('send-message', function(data) {
-      io.sockets.in(roomKey).emit('message-received', data);
+    io.sockets.in(roomKey).emit('message-received', data);
   });
+
 
   socket.on('send-answers', function(data){
     // io.emit('answers-received', data);

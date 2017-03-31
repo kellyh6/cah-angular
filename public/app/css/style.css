@@ -77,12 +77,12 @@ h1 {
   margin-left: 0.192em;
 }
 
-.card {
+.card, .newBlackCard {
   color: white;
   background: #231e1e;
 }
 
-.answer-card {
+.answer-card, .newWhiteCard {
   background: white;
   color: black;
   width: 100%;
@@ -97,7 +97,7 @@ h1 {
 }
 
 .card,
-.answer-card {
+.answer-card,.newBlackCard, .newWhiteCard {
   border: 1px solid black;
   border-radius: 15px;
   padding: 1rem;
@@ -106,7 +106,7 @@ h1 {
 }
 
 .card h6,
-.answer-card h6 {
+.answer-card h6, {
   position: absolute;
   font-size: 0.6em;
   margin-top: 1.618em;
@@ -141,4 +141,16 @@ footer .heart {
 
 .jumbotron {
   padding-top: 10px;
+}
+
+.gandalf img{
+  position: absolute;
+  height: 200px;
+  top: 20vh;
+  left: 40vh;
+}
+
+.newBlackCard, .newWhiteCard{
+  height: 300px;
+  width: 400px;
 }
