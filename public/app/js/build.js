@@ -6,6 +6,7 @@ angular.module('BuildCtrls', [])
     $scope.backBlack = false;
     $scope.frontWhite = true;
     $scope.backWhite = false;
+    $scope.radiobtn = 1;
     $scope.customBlack = {
     	question: '',
     	blanks: 0

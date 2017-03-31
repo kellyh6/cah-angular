@@ -18,6 +18,9 @@ var io = require('socket.io')(server);
 
 
 
+
+
+
 //mongoose models and connection
 var mongoose = require('mongoose');
 var User = require('./models/user');
@@ -28,7 +31,8 @@ var Deck = require('./models/deck');
 var users = [];
 // var u = Url.parse(url)
 
-mongoose.connect('mongodb://localhost/cardsagainsthumanity');
+
+mongoose.connect(process.env.MONGOLAB_CHARCOAL_URI || 'mongodb://localhost/cardsagainsthumanity');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

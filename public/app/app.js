@@ -1,4 +1,4 @@
-var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls', 'BuildCtrls']);
+var app = angular.module('AuthApp', ['ui.router', 'AuthCtrls', 'CardsCtrls', 'ngStorage', 'ngLodash', 'ChatCtrls', 'BuildCtrls', 'DeckCtrls', 'luegg.directives']);
 
 app.config([
   '$stateProvider',
@@ -17,6 +17,11 @@ app.config([
       url: '/build',
       templateUrl: 'app/views/build.html',
       controller: 'BuildCtrl'
+    })
+    .state('decks', {
+      url: '/decks',
+      templateUrl: 'app/views/showdeck.html',
+      controller: 'DeckCtrl'
     })
     .state('join', {
       url: '/:roomId',

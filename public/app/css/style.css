@@ -3,7 +3,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: url("../img/wood-bg.jpg");
-  background-size: cover;
+  /*background-size: cover;*/
   background-color: black;
 }
 
@@ -86,23 +86,31 @@ h1 {
   background: white;
   color: black;
   width: 100%;
-  margin-bottom: 10px;
 }
 
-.card-back h4:after {
-  content: "Cards Against Humanity";
-  width: inherit;
-  font-size: 1.5em;
+.card-back h4{
+  font-size: 2em;
   line-height: 1.2em;
 }
 
+.card-back h3 {
+  margin-top: 30px;
+  text-align: center;
+  display: none;
+}
+
+.card-back:hover h3{
+  display: inline;
+}
+
 .card,
-.answer-card,.newBlackCard, .newWhiteCard {
+.answer-card, .card-back, .newBlackCard, .newWhiteCard {
   border: 1px solid black;
   border-radius: 15px;
   padding: 1rem;
   min-height: 20em;
   position: relative;
+  margin-bottom: 10px;
 }
 
 .card h6,
@@ -118,6 +126,11 @@ h1 {
 .answer-card h6:after {
   font-size: 60%;
   margin-left: 1px;
+}
+
+.card-back {
+  text-align: left;
+  vertical-align: top;
 }
 
 .row {
@@ -141,13 +154,6 @@ footer .heart {
 
 .jumbotron {
   padding-top: 10px;
-}
-
-.gandalf img{
-  position: absolute;
-  height: 200px;
-  top: 20vh;
-  left: 40vh;
 }
 
 .newBlackCard, .newWhiteCard{

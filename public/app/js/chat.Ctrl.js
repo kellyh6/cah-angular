@@ -1,11 +1,18 @@
 angular.module('ChatCtrls', ['Services'])
-.controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state', '$stateParams',  function($location, $scope, $localStorage, socket, $state, $stateParams){
+.controller('JoinCtrl', ['$location', '$scope', '$localStorage', 'socket', '$state', '$stateParams', 'DeckAPI', 'sharedProperties',  function($location, $scope, $localStorage, socket, $state, $stateParams, DeckAPI, sharedProperties){
   $scope.playerInput = '';
   $scope.playerList = [];
   $scope.nicknames = [];
   $scope.mynickname = '';
+  $scope.decks = [];
   var nickname;
   $scope.privateRoom = window.location.href;
+
+  DeckAPI.getDecks().then(function success(response){
+    $scope.decks = response;
+  }, function error(err){
+    console.log(err);
+  });
 
   $scope.randomString = function() {
     var text = "";
@@ -62,12 +69,22 @@ angular.module('ChatCtrls', ['Services'])
   }
 
   $scope.startGame = function(){
-    $location.path("/main/" + $stateParams.roomId);
-    // $state.go("main2" + $stateParams.roomId);
+    var deckIds = [];
+    $scope.decks.forEach(function(d) {
+        if (d.selected) {
+        deckIds.push(d._id);
+      }
+    });
+    // if(deckIds.length === 0){
+    //   $scope.errorMessage = "Games doth need many a card to be enjoyed, or not to be.";
+    // } else {
+      sharedProperties.setDeckIds(deckIds);
+      $location.path("/main/" + $stateParams.roomId);
+    // }
   }
 
 }])
-.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams){
+.controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', '$location', 'sharedProperties', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams, $location, sharedProperties){
         $scope.message = '';
         $scope.messages = [];
         $scope.users = [];
@@ -89,6 +106,7 @@ angular.module('ChatCtrls', ['Services'])
         $scope.gandalf = false;
         $scope.cardCzarIndex = null;
         $scope.round = -1;
+        $scope.deckIds = sharedProperties.getDeckIds();
         // ROOMS ------ ADDED ROOM -> WORKING
         $scope.room = $stateParams.roomId
         // ****
@@ -110,8 +128,7 @@ angular.module('ChatCtrls', ['Services'])
             });
         });
 
-
-        BlackCardAPI.getCards().then(function success(response){
+        BlackCardAPI.getCardsFromManyDecks($scope.deckIds).then(function success(response){
           $scope.blackCards = response;
         }, function error(err){
           console.log(err);
@@ -139,8 +156,13 @@ angular.module('ChatCtrls', ['Services'])
 
 
         $scope.drawBlackCard = function(){
+          if($scope.users.length < 3) {
+            console.log("hi")
+            $location.path("/");
+            return;
+          }
           if($scope.cardCzar === 0){
-            WhiteCardAPI.getCards().then(function success(response){
+            WhiteCardAPI.getCardsFromManyDecks($scope.deckIds).then(function success(response){
                 var whiteCards = response;
                 var playerCards = [];
                 for(var i = 0; i < $scope.users.length;i++){
@@ -218,7 +240,7 @@ angular.module('ChatCtrls', ['Services'])
         }
 
         socket.on('message-received', function(data) {
-          $scope.messages.unshift(data);
+          $scope.messages.push(data);
         });
 
         socket.on('user-liked', function(data) {
@@ -239,14 +261,19 @@ angular.module('ChatCtrls', ['Services'])
         };
 
         $scope.submitAnswer = function() {
-            if(!$scope.selectedAnswer.isNaN) {
-              $scope.userCardsPicked = $scope.userCardsPicked + 1;
-              var card = $scope.myCards[$scope.selectedAnswer];
-              card.order = $scope.userCardsPicked;
-              card.nickname = $scope.mynickname;
-              socket.emit('send-card', card);
-              $scope.myCards.splice($scope.selectedAnswer, 1)
-              $scope.selectedAnswer = null;
+          if($scope.users.length < 3) {
+            console.log("hi")
+            $location.path("/");
+            return;
+          }
+          if(!$scope.selectedAnswer.isNaN) {
+            $scope.userCardsPicked = $scope.userCardsPicked + 1;
+            var card = $scope.myCards[$scope.selectedAnswer];
+            card.order = $scope.userCardsPicked;
+            card.nickname = $scope.mynickname;
+            socket.emit('send-card', card);
+            $scope.myCards.splice($scope.selectedAnswer, 1)
+            $scope.selectedAnswer = null;
           }
         }
 
