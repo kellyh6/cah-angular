@@ -67,6 +67,16 @@ angular.module('Services', [])
 .factory('BlackCardAPI', ['$http', function($http){
   var blackCards = [];
   return {
+    getCardsFromDeck: function(deckId){
+      return $http.get("api/blackCards/" + deckId)
+      .then(function success(response){
+        console.log(response);
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
     getCards: function(){
       return $http.get("api/blackCards")
       .then(function success(response){
@@ -108,9 +118,41 @@ angular.module('Services', [])
     }
   };
 }])
+.factory('DeckAPI', ['$http', function($http){
+  return {
+    getDecks: function(){
+      return $http.get("api/decks")
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    getDeckId: function(deckName){
+      return $http.get("api/decks/" + deckName)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    }
+  };
+}])
 .factory('WhiteCardAPI', ['$http', function($http){
   var whiteCards = [];
   return {
+    getCardsFromDeck: function(deckId){
+      return $http.get("api/whiteCards/" + deckId)
+      .then(function success(response){
+        console.log(response);
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
     getCards: function(){
       return $http.get("api/whiteCards")
       .then(function success(response){

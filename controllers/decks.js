@@ -10,6 +10,14 @@ router.get('/', function(req, res){
   });
 });
 
+//deck id
+router.get('/:deckName', function(req, res){
+  Deck.find({name : req.params.deckName}, function(err, deck) {
+    if (err) return res.status(500).send(err);
+    return res.send(deck._id);
+  });
+});
+
 //deck w/ all cards
 
 //all users decks

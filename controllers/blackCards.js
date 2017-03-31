@@ -1,5 +1,6 @@
 var express = require('express');
 var BlackCard = require('../models/blackCard');
+var ObjectId = require('mongoose').Types.ObjectId;
 var router = express.Router();
 
 //get all the black cards
@@ -7,6 +8,13 @@ router.get('/', function(req, res){
   BlackCard.find(function(err, blackCards){
     if(err) return res.status(500).send(err);
     return res.send(blackCards);
+  });
+});
+
+router.get('/:deckId', function(req, res){
+  BlackCard.find({pack : req.params.deckId}, function(err, cards) {
+    if (err) return res.status(500).send(err);
+    return res.send(cards);
   });
 });
 
