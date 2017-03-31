@@ -18,6 +18,9 @@ var io = require('socket.io')(server);
 
 
 
+
+
+
 //mongoose models and connection
 var mongoose = require('mongoose');
 var User = require('./models/user');
@@ -28,7 +31,8 @@ var Deck = require('./models/deck');
 var users = [];
 // var u = Url.parse(url)
 
-mongoose.connect('mongodb://localhost/cardsagainsthumanity');
+
+mongoose.connect(process.env.MONGOLAB_CHARCOAL_URI || 'mongodb://localhost/cardsagainsthumanity');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -84,7 +88,6 @@ io.sockets.on('connection', function(socket){
     io.sockets.in(roomKey).emit('message-received', data);
   });
 
-
   socket.on('send-answers', function(data){
     // io.emit('answers-received', data);
     io.sockets.in(roomKey).emit('answers-received', data);
@@ -116,6 +119,10 @@ io.sockets.on('connection', function(socket){
 
   socket.on('send-player-hands', function(data){
     io.sockets.in(roomKey).emit('player-hands-received', data);
+  });
+
+  socket.on('send-bitches', function(data){
+    io.sockets.in(roomKey).emit('bitches-received', data);
   });
 
 });

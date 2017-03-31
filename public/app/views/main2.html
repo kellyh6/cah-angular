@@ -6,12 +6,15 @@
       <h4 class="text-center" ng-show="cardCzar !== 0 && czarPicking && !winnerSelected">{{cardCzar}} is picking an answer...</h4>
       <h4 class="text-center" ng-show="cardCzar !== 0 && winnerSelected">{{roundWinner}} got +1 appletini!</h4>
       <div class="row">
-        <button class="btn btn-primary" ng-show="cardCzar === 0 || winnerSelected && cardCzar === mynickname" ng-click="drawBlackCard()">Draw Card</button>
         <div class='col-xs-3'>
           <div class='card'>
             <h4 class="card-title">{{blackCard.question}}</h4>
-            <h6>Cards Against Assembly</h6>
+            <h6>Cards Against Humanity</h6>
           </div>
+        </div>
+        <div class="card card-back col-xs-3" ng-show="(mynickname === nicknames[0] && cardCzar === 0 ) || (winnerSelected && cardCzar === mynickname)" ng-click="drawBlackCard()">
+          <h4>Cards <br> Against <br> Humanity</h4>
+          <h3>Draw Card</h3>
         </div>
       </div>
       <div class="row">
@@ -19,7 +22,7 @@
           <div class='answer-card' ng-class="{selected: submittedAnswers[$index].nickname === roundWinner}" ng-click="!czarPicking || chooseWinningcard($index)">
             <h4 class="card-title" ng-show="czarPicking">{{a.answer}}</h4>
             <h4 ng-show="czarPicking && blanks > 1" class="text-center">{{a.order}}</h4>
-            <h6>Cards Against Assembly</h6>
+            <h6>Cards Against Humanity</h6>
           </div>
         </div>
         <button class="btn btn-primary" ng-show="czarPicking && cardCzar === mynickname && !winnerSelected" ng-click="selectWinningAnswer()">Select Winner</button>
@@ -40,7 +43,7 @@
           <div class='answer-card' ng-class="{selected: $index === selectedAnswer}" ng-click="czarPicking || chooseCard($index)">
             <h4 class="card-title">{{card.answer}} </h4>
             <h4 ng-show="$index === selectedAnswer && blanks > 1" class="text-center">{{userCardsPicked+1}}</h4>
-            <h6>Cards Against Assembly</h6>
+            <h6>Cards Against Humanity</h6>
 
           </div>
         </div>
@@ -72,7 +75,7 @@
         </div>
       </form>
       <br>
-      <div class='well chatbox' id='chat_history'>
+      <div class='well chatbox' scroll-glue id='chat_history'>
         <ul class='list-unstyled'>
           <li ng-repeat='m in messages'>
             <b>{{m.from}} </b>:

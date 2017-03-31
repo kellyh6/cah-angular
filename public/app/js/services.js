@@ -67,6 +67,15 @@ angular.module('Services', [])
 .factory('BlackCardAPI', ['$http', function($http){
   var blackCards = [];
   return {
+    getCardsFromManyDecks: function(array){
+      return $http.get("api/blackCards/" + array)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log(err);
+        return null;
+      })
+    },
     getCards: function(){
       return $http.get("api/blackCards")
       .then(function success(response){
@@ -108,9 +117,40 @@ angular.module('Services', [])
     }
   };
 }])
+.factory('DeckAPI', ['$http', function($http){
+  return {
+    getDecks: function(){
+      return $http.get("api/decks")
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    getDeckId: function(deckName){
+      return $http.get("api/decks/" + deckName)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    }
+  };
+}])
 .factory('WhiteCardAPI', ['$http', function($http){
   var whiteCards = [];
   return {
+    getCardsFromManyDecks: function(array){
+      return $http.get("api/whiteCards/" + array)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log(err);
+        return null;
+      })
+    },
     getCards: function(){
       return $http.get("api/whiteCards")
       .then(function success(response){
@@ -185,6 +225,7 @@ angular.module('Services', [])
 .service("sharedProperties", function(){
   var numPlayers = 3;
   var playerList = ["player 1", "player 2", "player 3"];
+  var deckIds = [];
 
   return {
     getNumPlayers: function() {
@@ -198,6 +239,12 @@ angular.module('Services', [])
     },
     setPlayerList: function(value){
       playerList = value;
+    },
+    getDeckIds: function() {
+      return deckIds;
+    },
+    setDeckIds: function(value){
+      deckIds = value;
     }
   };
 })
