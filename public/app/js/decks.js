@@ -22,22 +22,40 @@ angular.module('DeckCtrls', ['Services'])
     console.log(err);
   });
 
-  //TODO: have all cards as an optio in the dropdown
-  //TODO: allow users to show cards from multiple decks
-  //TODO: when in the join view, allow users to select which decks they want to play the game with
-  //TODO: get a better shuffle function?
-  //TODO: show number of open rooms? How to close a room?
+  $scope.getCardsFromManyDecks = function(){
+    var deckIds = [];
+    $scope.decks.forEach(function(d) {
+        if (d.selected) {
+        deckIds.push(d._id);
+      }
+    });
 
-  $scope.getCards = function(){
-    $scope.blackCards = [];
-    $scope.whiteCards = [];
-    BlackCardAPI.getCardsFromDeck($scope.deckId).then(function success(response){
+    BlackCardAPI.getCardsFromManyDecks(deckIds).then(function success(response){
       $scope.blackCards = response;
     }, function error(err){
       console.log(err);
     });
 
-    WhiteCardAPI.getCardsFromDeck($scope.deckId).then(function success(response){
+    WhiteCardAPI.getCardsFromManyDecks(deckIds).then(function success(response){
+      $scope.whiteCards = response;
+    }, function error(err){
+      console.log(err);
+    });
+  }
+
+  //TODO: allow users to show cards from multiple decks
+  //TODO: when in the join view, allow users to select which decks they want to play the game with
+
+  $scope.getCards = function(){
+    $scope.blackCards = [];
+    $scope.whiteCards = [];
+    BlackCardAPI.getCardsFromManyDecks($scope.deckId).then(function success(response){
+      $scope.blackCards = response;
+    }, function error(err){
+      console.log(err);
+    });
+
+    WhiteCardAPI.getCardsFromManyDecks($scope.deckId).then(function success(response){
       $scope.whiteCards = response;
     }, function error(err){
       console.log(err);
