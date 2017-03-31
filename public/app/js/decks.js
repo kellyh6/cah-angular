@@ -43,9 +43,6 @@ angular.module('DeckCtrls', ['Services'])
     });
   }
 
-  //TODO: allow users to show cards from multiple decks
-  //TODO: when in the join view, allow users to select which decks they want to play the game with
-
   $scope.getCards = function(){
     $scope.blackCards = [];
     $scope.whiteCards = [];

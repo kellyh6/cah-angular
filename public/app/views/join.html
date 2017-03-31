@@ -15,8 +15,8 @@
 		<label ng-repeat="d in decks track by $index" ng-show="playerList[0].nickname === mynickname">{{d.name}}
 				<input ng-model="d.selected" type="checkbox" value="{{d._id}}">
 		</label><br/>
-<!--&& playerList[0].nickname === mynickname-->
-		<a ng-show="playerList.length >= 3 && playerList.length <= 10" class="btn btn-success" value="Start Game" ng-click="startGame()" >Start Game</a>
+
+		<a ng-show="playerList.length >= 3 && playerList.length <= 10 && playerList[0].nickname === mynickname" class="btn btn-success" value="Start Game" ng-click="startGame()" >Start Game</a>
 		<br><br>
 		<p class="white"><strong>{{ errorMessage }}</strong></p>
 </div>

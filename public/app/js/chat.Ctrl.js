@@ -5,6 +5,7 @@ angular.module('ChatCtrls', ['Services'])
   $scope.nicknames = [];
   $scope.mynickname = '';
   $scope.decks = [];
+  $scope.sendDothBitchesElsewhere = false;
   var nickname;
   $scope.privateRoom = window.location.href;
 
@@ -35,6 +36,12 @@ angular.module('ChatCtrls', ['Services'])
     data.forEach(function(d){
       $scope.nicknames.push(d.nickname);
     });
+  });
+
+  $scope.$watch("sendDothBitchesElsewhere", function(newVal, oldVal){
+    if(newVal){
+      $location.path("/main/" + $stateParams.roomId);
+    }
   });
 
   $scope.$watchCollection("playerList", function(newVal, oldVal){
@@ -75,13 +82,15 @@ angular.module('ChatCtrls', ['Services'])
         deckIds.push(d._id);
       }
     });
-    // if(deckIds.length === 0){
-    //   $scope.errorMessage = "Games doth need many a card to be enjoyed, or not to be.";
-    // } else {
       sharedProperties.setDeckIds(deckIds);
-      $location.path("/main/" + $stateParams.roomId);
-    // }
+      socket.emit('send-bitches', {
+        sendDothBitchesElsewhere: true
+      });
   }
+
+  socket.on('bitches-received', function(data){
+    $scope.sendDothBitchesElsewhere = data.sendDothBitchesElsewhere;
+  });
 
 }])
 .controller('MainCtrl', ['$scope', '$localStorage', 'socket', 'lodash', 'WhiteCardAPI', 'BlackCardAPI', '$stateParams', '$location', 'sharedProperties', function($scope, $localStorage, socket, lodash, WhiteCardAPI, BlackCardAPI, $stateParams, $location, sharedProperties){
@@ -147,13 +156,12 @@ angular.module('ChatCtrls', ['Services'])
         });
 
         $scope.canSubmit = function(){
-          if (!$scope.czarPicking && $scope.userCardsPicked !== $scope.blanks && $scope.blackCard.question && $scope.selectedAnswer) {
+          if (!$scope.czarPicking && $scope.userCardsPicked !== $scope.blanks && $scope.blackCard.question && $scope.selectedAnswer>=0 && $scope.mynickname !== $scope.cardCzar) {
             return true;
           } else {
             return false
           }
         }
-
 
         $scope.drawBlackCard = function(){
           if($scope.users.length < 3) {
