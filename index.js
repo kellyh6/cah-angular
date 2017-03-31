@@ -28,7 +28,8 @@ var Deck = require('./models/deck');
 var users = [];
 // var u = Url.parse(url)
 
-mongoose.connect('mongodb://localhost/cardsagainsthumanity');
+
+mongoose.connect(process.env.MONGOLAB_CHARCOAL_URI || 'mongodb://localhost/cardsagainsthumanity');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
