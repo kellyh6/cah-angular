@@ -31,7 +31,7 @@ body {
   background-color: rgba(0,0,0,0);
 }
 
-.white {
+.white, .whiteC {
   color:white;
 }
 
@@ -77,12 +77,12 @@ h1 {
   margin-left: 0.192em;
 }
 
-.card, .newBlackCard {
+.card, .newBlackCard, .blackC {
   color: white;
   background: #231e1e;
 }
 
-.answer-card, .newWhiteCard {
+.answer-card, .newWhiteCard, .whiteC {
   background: white;
   color: black;
   width: 100%;
@@ -156,11 +156,26 @@ footer .heart {
   padding-top: 10px;
 }
 
-.newBlackCard, .newWhiteCard{
+.newBlackCard, .newWhiteCard,{
   height: 300px;
   width: 400px;
 }
 
 .form-group {
-  text-align: center;
+  position:absolute;
+  bottom:10%;
+  margin-left: 45%;
 }
+
+.blackC, .whiteC{
+  text-align: center;
+  height: 600px;
+  width: 450px;
+  font-size: 90px;
+  border-radius: 10%;
+}
+
+.whiteC p{ 
+  font-size: 20px;
+}
+
