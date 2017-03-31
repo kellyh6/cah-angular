@@ -1,6 +1,6 @@
-angular.module('BuildCtrls', [])
+angular.module('BuildCtrls', ["Services"])
 
-.controller('BuildCtrl', function($scope) {
+.controller('BuildCtrl', ["$scope", 'BlackCardAPI','WhiteCardAPI', "Auth", 'DeckAPI', function($scope, BlackCardAPI, WhiteCardAPI, Auth, DeckAPI) {
     $scope.createBlackCard = "";
     $scope.frontBlack = true;
     $scope.backBlack = false;
@@ -9,10 +9,14 @@ angular.module('BuildCtrls', [])
     $scope.radiobtn = 1;
     $scope.customBlack = {
     	question: '',
-    	blanks: 0
+    	blanks: 0,
+        userId: Auth.currentUser().id,
+        pack: ''
     };
     $scope.customWhite = {
-    	answer: ''
+    	answer: '',
+        userId: Auth.currentUser().id,
+        pack: ''
     };
 
     $scope.togglefrontBlack = function() {
@@ -33,7 +37,23 @@ angular.module('BuildCtrls', [])
   	$scope.createcustomBlack = function() {
   		// No put values for $scope.customBlack in your cards database
   		//yup
-    	console.log($scope.customBlack);
+        DeckAPI.getDeckId('User Created Cards')
+        .then(function success(res){
+            $scope.customBlack.pack = res[0]._id;
+            BlackCardAPI.addCard($scope.customBlack)
+            .then(function success(res2) {
+                $scope.customBlack ={
+                    question: '',
+                    blanks: 0,
+                    userId: Auth.currentUser().id,
+                    pack: ''
+                };
+            }, function error(err){
+                console.log("Error creating ", err)
+            })
+        }, function error(err){
+            console.log('Error Finding Deck', err)
+        })
   	};
 
   	$scope.togglefrontWhite = function() {
@@ -51,10 +71,25 @@ angular.module('BuildCtrls', [])
   	}; 
   	//white card submitt button
   	$scope.createcustomWhite = function() {	
-  		console.log($scope.customWhite);
+        DeckAPI.getDeckId('User Created Cards')
+        .then(function success(res){
+            $scope.customWhite.pack = res[0]._id;
+            WhiteCardAPI.addCard($scope.customWhite)
+                .then(function success(res2) {
+                    $scope.customWhite = {
+                        answer: '',
+                        userId: Auth.currentUser().id,
+                        pack: ''
+                    };
+                }, function error(err){
+                    console.log("Error creating ", err)
+                })
+        }, function error(err){
+            console.log('Error Finding Deck', err)
+        })
   		};
     
-	});
+	}]);
 
 
 

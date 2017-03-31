@@ -8,6 +8,9 @@ var WhiteCardSchema = mongoose.Schema({
   },
   pack: {
     type: mongoose.Schema.Types.ObjectId, ref: 'Deck'
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId, ref: 'User'
   }
 });
 

@@ -23,10 +23,10 @@ app.config([
       templateUrl: 'app/views/showdeck.html',
       controller: 'DeckCtrl'
     })
-    .state('join', {
-      url: '/:roomId',
-      templateUrl: 'app/views/join.html',
-      controller: 'JoinCtrl'
+    .state('showMyCards', {
+      url: '/myCards',
+      templateUrl: 'app/views/showMyCards.html',
+      controller: 'DeckCtrl'
     })
     .state('signup', {
       url:'/signup',
@@ -42,11 +42,17 @@ app.config([
       url: '/404',
       templateUrl: 'app/views/404.html'
     })
+    .state('join', {
+      url: '/:roomId',
+      templateUrl: 'app/views/join.html',
+      controller: 'JoinCtrl'
+    })
     .state('main', {
       url:'/main/:roomId',
       templateUrl: 'app/views/main2.html',
       controller: 'MainCtrl'
     })
+  
 
     $locationProvider.html5Mode(true);
   }])

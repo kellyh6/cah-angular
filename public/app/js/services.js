@@ -64,7 +64,7 @@ angular.module('Services', [])
   };
 }])
 // Cards factory
-.factory('BlackCardAPI', ['$http', function($http){
+.factory('BlackCardAPI', ['$http', 'Auth', function($http, Auth){
   var blackCards = [];
   return {
     getCardsFromManyDecks: function(array){
@@ -114,6 +114,16 @@ angular.module('Services', [])
         console.log("error", err);
         return null;
       });
+    },
+    getMyCards: function(){
+      var id = Auth.currentUser().id;
+      return $http.get("api/blackCards/myCards/" + id)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
     }
   };
 }])
@@ -139,7 +149,7 @@ angular.module('Services', [])
     }
   };
 }])
-.factory('WhiteCardAPI', ['$http', function($http){
+.factory('WhiteCardAPI', ['$http', 'Auth', function($http, Auth){
   var whiteCards = [];
   return {
     getCardsFromManyDecks: function(array){
@@ -166,6 +176,7 @@ angular.module('Services', [])
     addCard: function(card){
       return $http.post("api/whiteCards", card)
       .then(function success(response){
+        console.log(response)
         return response.data;
       }, function error(err){
         console.log("error", err);
@@ -183,6 +194,16 @@ angular.module('Services', [])
     },
     deleteCard: function(cardId){
       return $http.delete("api/whiteCards/" + cardId)
+      .then(function success(response){
+        return response.data;
+      }, function error(err){
+        console.log("error", err);
+        return null;
+      });
+    },
+    getMyCards: function(){
+      var id = Auth.currentUser().id;
+      return $http.get("api/whiteCards/myCards/" + id)
       .then(function success(response){
         return response.data;
       }, function error(err){

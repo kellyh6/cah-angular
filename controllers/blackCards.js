@@ -13,10 +13,18 @@ router.get('/', function(req, res){
 
 router.get('/:deckIds', function(req, res){
   var idArray = req.params.deckIds.split(",");
-
   BlackCard.find({
     pack: { $in: idArray }
   }, function (err, cards){
+    if (err) return res.status(500).send(err);
+    return res.send(cards);
+  });
+});
+
+router.get('/myCards/:userId', function(req, res) {
+  BlackCard.find({
+    userId: req.params.userId
+  }, function(err, cards){
     if (err) return res.status(500).send(err);
     return res.send(cards);
   });
