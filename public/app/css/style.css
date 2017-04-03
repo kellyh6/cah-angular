@@ -167,15 +167,49 @@ footer .heart {
   margin-left: 45%;
 }
 
+.form-group2 {
+    line-height: 12px;
+     width: 18px;
+     margin-top: 3px;
+     margin-right: 10%;
+     position:absolute;
+     top:0;
+     right:0;
+}
+
 .blackC, .whiteC{
   text-align: center;
   height: 600px;
   width: 450px;
   font-size: 90px;
   border-radius: 10%;
+  padding-top: 15%;
+  margin: 0;
 }
 
-.whiteC p{ 
+.whiteC p,{ 
   font-size: 20px;
 }
+.popover {
+    color: black;
+    position: absolute;
+    top: 75px;
+    width: 300px;
+    height: 800px;
+    display: inline-block;
+    background-color: white;
+    margin-left: 80%;
+    border:solid;
+    border-color: black;
+    padding: 1%;
+    
+}
+
+.col-xs-6 {
+  margin: 0;
+  width: 500px;
+}
+
+
+
 

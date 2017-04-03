@@ -18,6 +18,7 @@ angular.module('BuildCtrls', ["Services"])
         userId: Auth.currentUser().id,
         pack: ''
     };
+    $scope.showPopover=false;  
 
     $scope.togglefrontBlack = function() {
         $scope.frontBlack = !$scope.frontBlack
